@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Delivery Location - Online Food Delivery Website</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+    <!-- Hover CSS -->
+    <link rel="stylesheet" href="css/hover-min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Mapbox CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        #map { width: 100%; height: 400px; border-radius: 12px; margin-bottom: 20px; }
+        .location-form { max-width: 500px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 12px; padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07);}
+        .location-form label { font-weight: bold; margin-top: 10px; display: block;}
+        .location-form input[type="text"] { width: 100%; padding: 8px; margin-bottom: 12px; }
+        .location-form button { width: 100%; }
+        .mapboxgl-ctrl-geocoder { min-width: 100%; margin-bottom: 12px; }
+        #address-input { margin-bottom: 12px; }
+        .mapboxgl-ctrl-top-left { top: 60px !important; left: 0 !important; }
+    </style>
+</head>
+<body>
+    <!-- Navigation Section Start -->
+    <header class="navbar">
+        <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html" title="Logo">
+                        <img src="img/logo.png" alt="Logo" class="img-responsive">
+                    </a>
+                </div>
+                <div class="menu text-right">
+                    <ul>
+                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
+                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
+                        <li><a class="hvr-underline-from-center" href="foods.html">Foods</a></li>
+                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
+                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
+                        <li><a class="hvr-underline-from-center" href="login.html">Login</a></li>
+                        <li>
+                            <a id="shopping-cart" class="shopping-cart">
+                                <i class="fa fa-cart-arrow-down"></i>
+                                <span class="badge">0</span>
+                            </a>
+                            <div id="cart-content" class="cart-content">
+                                <h3 class="text-center">Shopping Cart</h3>
+                                <table class="cart-table" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Food</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cart-table-body"></tbody>
+                                    <tfoot>
+                                        <tr id="cart-total-row"></tr>
+                                    </tfoot>
+                                </table>
+                                <a href="order.html" class="btn-primary">Confirm Order</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Navigation Section End -->
+
+    <!-- Location Selection Section Start -->
+    <section class="order">
+        <div class="container">
+            <h2 class="text-center">Select Your Delivery Location</h2>
+            <div class="heading-border"></div>
+            <form class="location-form" id="location-form">
+                <label for="address-input">Enter your address or area:</label>
+                <input type="text" id="address-input" placeholder="e.g. Plot 12, Aminu Kano Crescent, Wuse II, Abuja" autocomplete="off" required>
+                <button type="button" id="use-current-location" class="btn-primary" style="margin-bottom:12px;">Use Current Location</button>
+                <div id="map"></div>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+                <button type="submit" class="btn-primary">Confirm Location</button>
+            </form>
+        </div>
+    </section>
+    <!-- Location Selection Section End -->
+
+    <!-- Footer Section Start -->
+    <section class="footer">
+        <div class="container">
+            <div class="grid-3">
+                <div class="text-center">
+                    <h3>About Us</h3><br>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat officia, temporibus expedita dicta eligendi harum architecto fugiat sint, laudantium omnis animi. Voluptas praesentium maiores minima pariatur necessitatibus consequuntur, similique assumenda.</p>
+                </div>
+                <div class="texr-center">
+                    <h3>Site Map</h3><br>
+                    <div class="site-links">
+                        <a href="categories.html">Categories</a>
+                        <a href="foods.html">Foods</a>
+                        <a href="order.html">Order</a>
+                        <a href="contact.html">Contact</a>
+                        <a href="login.html">Login</a>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <h3>Social Links</h3><br>
+                    <div class="social">
+                        <ul>
+                            <li><a href="#"><img src="https://img.icons8.com/color/48/null/facebook-new.png"/></a></li>
+                            <li><a href="#"><img src="https://img.icons8.com/fluency/48/null/instagram-new.png"/></a></li>
+                            <li><a href="#"><img src="https://img.icons8.com/color/48/null/twitter--v1.png"/></a></li>
+                            <li><a href="#"><img src="https://img.icons8.com/color/48/null/linkedin-circled--v1.png"/></a></li>
+                            <li><a href="#"><img src="https://img.icons8.com/color/48/null/youtube-play.png"/></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section End -->
+
+    <!-- Copyright Section start -->
+    <section class="copyright">
+        <div class="container text-center">
+            <p>All rights reserved. Design By <a href="#">Gideon Ghata</a></p>
+        </div>
+        <a id="back-to-top" class="btn-primary">
+            <i class="fa fa-angle-double-up"></i>
+        </a>
+    </section>
+    <!-- Copyright Section End -->
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script src="js/custom.js"></script>
+    <!-- Mapbox JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+    <script>
+    // Mapbox access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZy1naGF0YSIsImEiOiJjbWUxYmtiMzEwOWswMm1yMjRkMWxqOHRjIn0.8zQJC4rxbUUDzCO_mSNw1g';
+
+    let map, marker, geocoder;
+
+    // Abuja bounding box: [minLng, minLat, maxLng, maxLat]
+    const abujaBbox = [7.2, 8.8, 7.7, 9.2];
+
+    function isWithinAbuja(lng, lat) {
+        return (
+            lng >= abujaBbox[0] && lng <= abujaBbox[2] &&
+            lat >= abujaBbox[1] && lat <= abujaBbox[3]
+        );
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Satellite view for detailed buildings etc.
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-streets-v12',
+            center: [7.49508, 9.05785], // Abuja center
+            zoom: 13,
+            pitch: 0,
+            bearing: 0,
+            maxBounds: abujaBbox // Prevents panning outside Abuja
+        });
+
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // geocoder (search box)
+        geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false,
+            placeholder: 'Search for your address in Abuja, Nigeria',
+            countries: 'ng',
+            bbox: abujaBbox,
+            proximity: { longitude: 7.49508, latitude: 9.05785 }
+        });
+
+        // geocoder placement
+        let form = document.getElementById('location-form');
+        let addressInput = document.getElementById('address-input');
+        let geocoderDiv = document.createElement('div');
+        geocoderDiv.id = "geocoder-container";
+        form.insertBefore(geocoderDiv, addressInput.nextSibling);
+        geocoder.addTo('#geocoder-container');
+
+        // When user selects a result from geocoder
+        geocoder.on('result', function(e) {
+            setMarker(e.result.center, e.result.place_name);
+        });
+
+        // When user clicks on the map
+        map.on('click', function(e) {
+            if (isWithinAbuja(e.lngLat.lng, e.lngLat.lat)) {
+                setMarker([e.lngLat.lng, e.lngLat.lat]);
+                reverseGeocodeGoogle(e.lngLat.lng, e.lngLat.lat);
+            } else {
+                alert('Please select a location within Abuja.');
+            }
+        });
+
+        // When user types address and leaves input
+        addressInput.addEventListener('change', function() {
+            geocodeAddress(this.value);
+        });
+
+        // Use current location button
+        document.getElementById('use-current-location').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    if (isWithinAbuja(lng, lat)) {
+                        setMarker([lng, lat]);
+                        map.flyTo({center: [lng, lat], zoom: 17});
+                        reverseGeocodeGoogle(lng, lat);
+                    } else {
+                        alert('Your current location is outside Abuja. Please select a location within Abuja.');
+                    }
+                }, function() {
+                    alert('Unable to retrieve your location.');
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+
+        // Form submit
+        document.getElementById('location-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const address = document.getElementById('address-input').value;
+            const lat = document.getElementById('lat').value;
+            const lng = document.getElementById('lng').value;
+            if (!address || !lat || !lng) {
+                alert('Please select your location on the map.');
+                return;
+            }
+            if (!isWithinAbuja(lng, lat)) {
+                alert('Selected location is outside Abuja.');
+                return;
+            }
+            alert('Location confirmed!\nAddress: ' + address + '\nLatitude: ' + lat + '\nLongitude: ' + lng);
+        });
+
+        function setMarker(lngLat, address) {
+            if (marker) marker.remove();
+            marker = new mapboxgl.Marker({color: "#44bd32"})
+                .setLngLat(lngLat)
+                .addTo(map);
+            document.getElementById('lat').value = lngLat[1];
+            document.getElementById('lng').value = lngLat[0];
+            if (address) document.getElementById('address-input').value = address;
+        }
+
+        function geocodeAddress(address) {
+            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?country=NG&bbox=${abujaBbox.join(',')}&access_token=${mapboxgl.accessToken}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.features && data.features.length > 0) {
+                        const feature = data.features[0];
+                        if (isWithinAbuja(feature.center[0], feature.center[1])) {
+                            setMarker(feature.center, feature.place_name);
+                            map.flyTo({center: feature.center, zoom: 16});
+                        } else {
+                            alert('Please select a location within Abuja.');
+                        }
+                    }
+                });
+        }
+
+        // Use Google Maps Geocoding API for accurate addresses
+        function reverseGeocodeGoogle(lng, lat) {
+            // Replace YOUR_GOOGLE_MAPS_API_KEY with your actual key
+            fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_GOOGLE_MAPS_API_KEY`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "OK" && data.results.length > 0) {
+                        document.getElementById('address-input').value = data.results[0].formatted_address;
+                    } else {
+                        document.getElementById('address-input').value = "Address not found";
+                    }
+                });
+        }
+    });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let badge = document.querySelector('.shopping-cart .badge');
+        if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+    });
+    </script>
+    <script>
+    // Cart dropdown rendering
+    document.addEventListener('DOMContentLoaded', function() {
+        function renderCartDropdown() {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            let badge = document.querySelector('.shopping-cart .badge');
+            let tbody = document.getElementById('cart-table-body');
+            let totalRow = document.getElementById('cart-total-row');
+            let total = 0;
+
+            if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (tbody) tbody.innerHTML = '';
+            if (totalRow) totalRow.innerHTML = '';
+
+            if (cart.length === 0) {
+                if (tbody) {
+                    let row = document.createElement('tr');
+                    let cell = document.createElement('td');
+                    cell.colSpan = 6;
+                    cell.innerText = 'Your cart is empty.';
+                    cell.style.textAlign = 'center';
+                    row.appendChild(cell);
+                    tbody.appendChild(row);
+                }
+            } else {
+                cart.forEach((item, idx) => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><img src="${item.image}" alt="Food" style="width:40px;height:40px;"></td>
+                        <td>${item.name}</td>
+                        <td>$ ${item.price.toFixed(2)}</td>
+                        <td>${item.qty}</td>
+                        <td>$ ${(item.price * item.qty).toFixed(2)}</td>
+                        <td><a href="#" class="btn-delete" data-index="${idx}">&times;</a></td>
+                    `;
+                    tbody.appendChild(row);
+                    total += item.price * item.qty;
+                });
+                if (totalRow) {
+                    totalRow.innerHTML = `
+                        <th colspan="4">Total</th>
+                        <th>$${total.toFixed(2)}</th>
+                        <th></th>
+                    `;
+                }
+            }
+        }
+        renderCartDropdown();
+
+        let cartContent = document.getElementById('cart-content');
+        if (cartContent) {
+            cartContent.addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-delete')) {
+                    e.preventDefault();
+                    let index = e.target.getAttribute('data-index');
+                    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                    cart.splice(index, 1);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCartDropdown();
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
