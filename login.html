@@ -65,22 +65,33 @@
             </div>
         </nav>
     </header>
+    <!-- Navigation Section Start -->
+    <header class="navbar">
+        <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
+            <div class="container" style="position:relative;">
+                <div class="logo">
+                    <a href="index.html" title="Logo">
+                        <img src="img/logo.png" alt="Logo" class="img-responsive">
+                    </a>
+                </div>
+                <div class="hamburger" id="nav-hamburger" tabindex="0" aria-label="Open navigation" aria-expanded="false" aria-controls="main-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="menu text-right">
+                    <ul id="main-menu">
+                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
+                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
+                        <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
+                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
+                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
     <!-- Navigation Section End -->
-
-    <!-- Login Section Start -->
-    <section class="login" style="background: url('img/doodle-bg.png') center center/cover no-repeat; padding: 60px 0;">
-        <div class="container" style="max-width: 400px; margin: 0 auto; background: rgba(255,255,255,0.92); border-radius: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); text-align: center;">
-            <h2 class="text-center" style="color: #44bd32;">Login</h2>
-            <div class="heading-border"></div>
-            <form action="" class="form" style="margin-top: 20px;">
-                <fieldset style="border: none;">
-                    <p class="label">Email</p>
-                    <input type="email" placeholder="Enter your email..." required style="width:100%;margin-bottom:10px;padding:8px;">
-                    <p class="label">Password</p>
-                    <input type="password" placeholder="Enter your password..." required style="width:100%;margin-bottom:16px;padding:8px;">
-                    <input type="submit" value="Login" class="btn-primary" style="width:100%;margin-bottom:16px;">
-                </fieldset>
-            </form>
             <p style="margin-bottom: 0;">If you don't have an account, 
                 <a href="#" id="show-register" style="color: #44bd32; text-decoration: underline; cursor: pointer;">Register</a>
             </p>
@@ -162,6 +173,32 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="js/custom.js"></script>
+    <script>
+    // Responsive Hamburger Menu JS
+    document.addEventListener('DOMContentLoaded', function() {
+        var hamburger = document.getElementById('nav-hamburger');
+        var menu = document.getElementById('main-menu');
+        if (hamburger && menu) {
+            hamburger.addEventListener('click', function() {
+                menu.classList.toggle('active');
+                var expanded = hamburger.getAttribute('aria-expanded') === 'true';
+                hamburger.setAttribute('aria-expanded', !expanded);
+            });
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+                    menu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    menu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    });
+    </script>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     function renderCart() {

@@ -67,24 +67,33 @@
     </header>
     <!-- Navigation Section End -->
 
-    <!-- Locations Section Start -->
-    <section class="locations">
-        <div class="container">
-            <h2 class="text-center">Our Locations</h2>
-            <div class="heading-border"></div>
-            <div class="grid-2">
-                <div class="location-box">
-                    <div class="location-img">
-                        <img src="img/Location-Wuse.jpg" alt="Wuse Branch" class="img-responsive img-curve">
-                    </div>
-                    <div class="location-desc">
-                        <h4>Wuse</h4>
-                        <p>Plot 12, Aminu Kano Crescent, Wuse II, Abuja</p>
-                    </div>
+    <!-- Navigation Section Start -->
+    <header class="navbar">
+        <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
+            <div class="container" style="position:relative;">
+                <div class="logo">
+                    <a href="index.html" title="Logo">
+                        <img src="img/logo.png" alt="Logo" class="img-responsive">
+                    </a>
                 </div>
-                <div class="location-box">
-                    <div class="location-img">
-                        <img src="img/Location-Garki.png" alt="Garki Branch" class="img-responsive img-curve">
+                <div class="hamburger" id="nav-hamburger" tabindex="0" aria-label="Open navigation" aria-expanded="false" aria-controls="main-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="menu text-right">
+                    <ul id="main-menu">
+                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
+                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
+                        <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
+                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
+                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Navigation Section End -->
                     </div>
                     <div class="location-desc">
                         <h4>Garki</h4>
@@ -183,6 +192,32 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="js/custom.js"></script>
+    <script>
+    // Responsive Hamburger Menu JS
+    document.addEventListener('DOMContentLoaded', function() {
+        var hamburger = document.getElementById('nav-hamburger');
+        var menu = document.getElementById('main-menu');
+        if (hamburger && menu) {
+            hamburger.addEventListener('click', function() {
+                menu.classList.toggle('active');
+                var expanded = hamburger.getAttribute('aria-expanded') === 'true';
+                hamburger.setAttribute('aria-expanded', !expanded);
+            });
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+                    menu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    menu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    });
+    </script>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Render cart in dropdown
