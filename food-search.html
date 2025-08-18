@@ -14,36 +14,20 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
     <!-- Navigation Section Start -->
     <header class="navbar">
         <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
-            <div class="container" style="position:relative;">
+            <div class="container">
                 <!-- logo -->
                 <div class="logo">
                     <a href="index.html" title="Logo">
                         <img src="img/logo.png" alt="Logo" class="img-responsive">
                     </a>
                 </div>
-                <!-- Hamburger Icon -->
-                <div class="hamburger" id="nav-hamburger" tabindex="0" aria-label="Open navigation" aria-expanded="false" aria-controls="main-menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
                 <!-- Main Menu -->
                 <div class="menu text-right">
-                    <ul id="main-menu">
-                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
-                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
-                        <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
-                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
-                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <!-- Navigation Section End -->
+                    <ul>
                         <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
                         <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
                         <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
@@ -248,34 +232,6 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <!-- Custom JS -->
     <script src="js/custom.js"></script>
-    <script>
-    // Responsive Hamburger Menu JS
-    document.addEventListener('DOMContentLoaded', function() {
-        var hamburger = document.getElementById('nav-hamburger');
-        var menu = document.getElementById('main-menu');
-        if (hamburger && menu) {
-            hamburger.addEventListener('click', function() {
-                menu.classList.toggle('active');
-                var expanded = hamburger.getAttribute('aria-expanded') === 'true';
-                hamburger.setAttribute('aria-expanded', !expanded);
-            });
-            // Optional: close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-                    menu.classList.remove('active');
-                    hamburger.setAttribute('aria-expanded', 'false');
-                }
-            });
-            // Optional: close menu on ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    menu.classList.remove('active');
-                    hamburger.setAttribute('aria-expanded', 'false');
-                }
-            });
-        }
-    });
-    </script>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Update cart badge

@@ -123,11 +123,6 @@
                             <li>
                                 <a href="https://www.facebook.com/share/177LwzV2vb/?mibextid=wwXIfr" id="facebook-link"><img src="https://img.icons8.com/color/48/null/facebook-new.png" alt="Facebook"/></a>
                             </li>
-                        <div class="hamburger" id="nav-hamburger" tabindex="0" aria-label="Open navigation" aria-expanded="false" aria-controls="main-menu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
                             <li>
                                 <a href="https://www.instagram.com/gghata34?igsh=YzFvbDV3bjJxYXNl&utm_source=qr" id="instagram-link"><img src="https://img.icons8.com/fluency/48/null/instagram-new.png" alt="Instagram"/></a>
                             </li>
@@ -163,32 +158,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="js/custom.js"></script>
-        <script>
-        // Responsive Hamburger Menu JS
-        document.addEventListener('DOMContentLoaded', function() {
-            var hamburger = document.getElementById('nav-hamburger');
-            var menu = document.getElementById('main-menu');
-            if (hamburger && menu) {
-                hamburger.addEventListener('click', function() {
-                    menu.classList.toggle('active');
-                    var expanded = hamburger.getAttribute('aria-expanded') === 'true';
-                    hamburger.setAttribute('aria-expanded', !expanded);
-                });
-                document.addEventListener('click', function(e) {
-                    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-                        menu.classList.remove('active');
-                        hamburger.setAttribute('aria-expanded', 'false');
-                    }
-                });
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        menu.classList.remove('active');
-                        hamburger.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            }
-        });
-        </script>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Render cart in dropdown
