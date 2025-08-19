@@ -5,10 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Food Delivery Website</title>
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="css/hover-min.css">
-    <link rel="stylesheet" href="css/style.css">
+            <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+            <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+            <link rel="stylesheet" href="css/hover-min.css">
+            <link rel="stylesheet" href="css/style.css">
+            <script>
+            // Preload critical images for faster first paint
+            (() => {
+                const preloadImages = [
+                    'img/logo.png',
+                    'img/category-bg1.png',
+                    'img/food/p1.jpg',
+                    'img/food/b1.jpg',
+                    'img/food/s1.jpg',
+                    'img/food/grilled-chicken.jpg',
+                    'img/food/beef-steak.jpg',
+                    'img/food/fries.jpg',
+                    'img/food/onion-rings.jpg',
+                    'img/food/asian-chicken-wrap.jpg',
+                    'img/food/caesar-wrap.jpg',
+                    'img/food/cheeseburger.jpg',
+                    'img/food/spicy-chicken-burger.jpg',
+                    'img/food/lemonade.jpg',
+                    'img/food/iced-coffee.jpg',
+                    'img/food/cheesecake.jpg',
+                    'img/food/lava-cake.jpg'
+                ];
+                preloadImages.forEach(src => { const img = new Image(); img.src = src; });
+            })();
+            </script>
 </head>
 <body>
     <!-- Navigation Section Start -->
@@ -59,6 +84,8 @@
             </div>
         </nav>
     </header>
+        <!-- Navigation Section End -->
+        <!-- Add loading="lazy" and width/height to all images in markup as needed -->
     <!-- Navigation Section End -->
 
     <!-- Food Search Section Start -->

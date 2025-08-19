@@ -5,14 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Food Delivery Website</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
-    <!-- Hover CSS -->
-    <link rel="stylesheet" href="css/hover-min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+        <!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+        <!-- Hover CSS -->
+        <link rel="stylesheet" href="css/hover-min.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="css/style.css">
+        <script>
+        // Preload critical images for faster first paint
+        (() => {
+            const preloadImages = [
+                'img/logo.png',
+                'img/doodle-bg.png'
+            ];
+            preloadImages.forEach(src => { const img = new Image(); img.src = src; });
+        })();
+        </script>
 </head>
 <body>
     <!-- Navigation Section Start -->

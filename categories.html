@@ -13,6 +13,21 @@
     <link rel="stylesheet" href="css/hover-min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+            <script>
+            // Preload critical images for faster first paint
+            (() => {
+                const preloadImages = [
+                    'img/category-bg1.png',
+                    'img/category/Category-burgers.jpg',
+                    'img/category/Category-desserts.jpg',
+                    'img/category/Category-drinks.jpg',
+                    'img/category/Category-meals.jpg',
+                    'img/category/Category-sides.jpg',
+                    'img/category/Category-wraps.jpg'
+                ];
+                preloadImages.forEach(src => { const img = new Image(); img.src = src; });
+            })();
+            </script>
 </head>
 <body>
     <!-- Navigation Section Start -->
@@ -75,37 +90,37 @@
             <div class="grid-3">
                 <a href="category-foods.html?cat=Meals">
                     <div class="float-container">
-                        <img src="img/Category-meals.jpg" class="img-responsive" alt="Meals">
+                            <img src="img/Category-meals.jpg" class="img-responsive" alt="Meals" loading="lazy" width="300" height="200">
                         <h3 class="float-text text-white">Meals</h3>
                     </div>
                 </a>
                 <a href="category-foods.html?cat=Sides">
                     <div class="float-container">
-                        <img src="img/Category-sides.jpg" class="img-responsive" alt="Sides">
+                            <img src="img/Category-sides.jpg" class="img-responsive" alt="Sides" loading="lazy" width="300" height="200">
                         <h3 class="float-text text-white">Sides</h3>
                     </div>
                 </a>
                 <a href="category-foods.html?cat=Wraps">
                     <div class="float-container">
-                        <img src="img/Category-wraps.jpg" class="img-responsive" alt="Wraps">
+                            <img src="img/Category-wraps.jpg" class="img-responsive" alt="Wraps" loading="lazy" width="300" height="200">
                         <h3 class="float-text text-white">Wraps</h3>
                     </div>
                 </a>
                 <a href="category-foods.html?cat=Burgers">
                     <div class="float-container">
-                        <img src="img/Category-burgers.jpg" class="img-responsive" alt="Burgers">
+                            <img src="img/Category-burgers.jpg" class="img-responsive" alt="Burgers" loading="lazy" width="300" height="200">
                         <h3 class="float-text text-white">Burgers</h3>
                     </div>
                 </a>
                 <a href="category-foods.html?cat=Drinks">
                     <div class="float-container">
-                        <img src="img/Category-drinks.jpg" class="img-responsive" alt="Drinks">
+                            <img src="img/Category-drinks.jpg" class="img-responsive" alt="Drinks" loading="lazy" width="300" height="200">
                         <h3 class="float-text text-white">Drinks</h3>
                     </div>
                 </a>
                 <a href="category-foods.html?cat=Desserts">
                     <div class="float-container">
-                        <img src="img/Category-desserts.jpg" class="img-responsive" alt="Desserts">
+                            <img src="img/Category-desserts.jpg" class="img-responsive" alt="Desserts" loading="lazy" width="300" height="200">
                         <h3 class="float-text text-white">Desserts</h3>
                     </div>
                 </a>
