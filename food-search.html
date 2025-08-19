@@ -215,7 +215,7 @@
                 list.innerHTML += `
                 <div class=\"food-menu-box\">
                     <div class=\"food-menu-img\">
-                        <img src=\"${food.image}\" alt=\"${food.name}\" class=\"img-responsive img-curve\">
+                        <img src=\"${food.image}\" alt=\"${food.name}\" class=\"img-responsive img-curve\" loading=\"lazy\" width=\"120\" height=\"120\">
                     </div>
                     <div class=\"food-menu-desc\">
                         <h4>${food.name}</h4>
@@ -270,6 +270,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
 
     // Optionally, update the dropdown cart table here as well
+
+    // Preload critical images for faster first paint
+    const preloadImages = [
+        'img/food/grilled-chicken.jpg',
+        'img/food/beef-steak.jpg',
+        'img/food/fries.jpg',
+        'img/food/onion-rings.jpg',
+        'img/food/asian-chicken-wrap.jpg',
+        'img/food/caesar-wrap.jpg',
+        'img/food/cheeseburger.jpg',
+        'img/food/spicy-chicken-burger.jpg',
+        'img/food/lemonade.jpg',
+        'img/food/iced-coffee.jpg',
+        'img/food/cheesecake.jpg',
+        'img/food/lava-cake.jpg'
+    ];
+    preloadImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
 });
 </script>
 <script>
