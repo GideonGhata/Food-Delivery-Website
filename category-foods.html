@@ -81,27 +81,26 @@
                                             `;
                                         });
                                         totalCell.textContent = '$' + total.toFixed(2);
+                                        // Update badge
+                                        let badge = document.querySelector('.shopping-cart .badge');
+                                        if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+                                    }
 
-                                        // Delete handler
-                                        tbody.querySelectorAll('.btn-delete').forEach(btn => {
-                                            btn.onclick = function(e) {
+                                    // Event delegation for delete buttons
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        renderCart();
+                                        window.renderCart = renderCart;
+                                        const tbody = document.getElementById('cart-table-body');
+                                        tbody.addEventListener('click', function(e) {
+                                            if (e.target && e.target.classList.contains('btn-delete')) {
                                                 e.preventDefault();
-                                                const idx = parseInt(this.getAttribute('data-idx'));
+                                                const idx = parseInt(e.target.getAttribute('data-idx'));
+                                                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
                                                 cart.splice(idx, 1);
                                                 localStorage.setItem('cart', JSON.stringify(cart));
                                                 renderCart();
-                                                // Update badge
-                                                let badge = document.querySelector('.shopping-cart .badge');
-                                                if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-                                            };
+                                            }
                                         });
-                                    }
-
-                                    // Render cart on page load and after add-to-cart
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        renderCart();
-                                        // Update badge when cart changes elsewhere
-                                        window.renderCart = renderCart;
                                     });
                                     </script>
                                 </table>
