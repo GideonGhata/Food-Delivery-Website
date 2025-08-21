@@ -4,155 +4,150 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-    (function() {
-        // --- Cart Utility Functions ---
-        function getCart() {
-            return JSON.parse(localStorage.getItem('cart') || '[]');
-        }
-        function setCart(cart) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-        function updateCartBadge() {
-            let cart = getCart();
-            let badge = document.querySelector('.shopping-cart .badge');
-            if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-        }
-        function addToCart({image, name, price, qty}) {
-            let cart = getCart();
-            let found = cart.find(item => item.name === name);
-            if (found) {
-                found.qty += qty;
-            } else {
-                cart.push({ image, name, price, qty });
+    <title>Online Food Delivery Website</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+    <!-- Hover CSS -->
+    <link rel="stylesheet" href="css/hover-min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation Section Start -->
+    <header class="navbar">
+        <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
+            <div class="container">
+                <!-- logo -->
+                <div class="logo">
+                    <a href="index.html" title="Logo">
+                        <img src="img/logo.png" alt="Logo" class="img-responsive">
+                    </a>
+                </div>
+                <!-- Main Menu -->
+                <div class="menu text-right">
+                    <ul>
+                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
+                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
+                        <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
+                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
+                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
+                        <li><a class="hvr-underline-from-center" href="login.html">Login</a></li>
+                        <li>
+                            <a id="shopping-cart" class="shopping-cart">
+                                <i class="fa fa-cart-arrow-down"></i>
+                                <span class="badge">4</span>
+                            </a>
+                            <div id="cart-content" class="cart-content">
+                                <h3 class="text-center">Shopping Cart</h3>
+                                <table class="cart-table" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Food</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cart-table-body"></tbody>
+                                    <tfoot>
+                                        <tr id="cart-total-row"></tr>
+                                    </tfoot>
+                                </table>
+                                <a href="order.html" class="btn-primary">Confirm Order</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Navigation Section End -->
+        // Render search results and attach add-to-cart listeners
+        function renderSearchResults(query) {
+            const list = document.getElementById('food-search-list');
+            const title = document.getElementById('food-search-title');
+            if (title) title.innerHTML = `Foods on your search <a href=\"#\" class=\"text-white\">\"${query || ''}\"</a>`;
+            if (!query) {
+                list.innerHTML = '<p class="text-center">Please enter a search term.</p>';
+                return;
             }
-            setCart(cart);
-            updateCartBadge();
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Foods data (copy from category-foods.html, but with all categories)
-            const foodsByCategory = {
-                Meals: [
-                    { name: "Grilled Chicken Plate", image: "img/food/grilled-chicken.jpg", price: 12.99, details: "Juicy grilled chicken breast with rice and veggies." },
-                    { name: "Beef Steak", image: "img/food/beef-steak.jpg", price: 15.99, details: "Tender beef steak with pepper sauce and fries." },
-                ],
-                Sides: [
-                    { name: "Fries", image: "img/food/fries.jpg", price: 3.99, details: "Crispy golden fries with ketchup." },
-                    { name: "Onion Rings", image: "img/food/onion-rings.jpg", price: 4.99, details: "Crispy onion rings with a side of ranch." },
-                ],
-                Wraps: [
-                    { name: "Asian Chicken Wrap", image: "img/food/asian-chicken-wrap.jpg", price: 8.99, details: "Grilled chicken, veggies, and Asian sauce in a soft wrap." },
-                    { name: "Caesar Wrap", image: "img/food/caesar-wrap.jpg", price: 7.99, details: "Our Chicken Caesar Wrap recipe is everything you love about a classic Caesar salad, wrapped up in a soft tortilla for a quick, satisfying lunch or light dinner." },
-                ],
-                Burgers: [
-                    { name: "Cheeseburger", image: "img/food/cheeseburger.jpg", price: 6.99, details: "Beef patty, cheddar cheese, lettuce, tomato, and pickles." },
-                    { name: "Spicy Chicken Burger", image: "img/food/spicy-chicken-burger.jpg", price: 7.49, details: "Spicy fried chicken breast, lettuce, and mayo." },
-                ],
-                Drinks: [
-                    { name: "Lemonade", image: "img/food/lemonade.jpg", price: 2.99, details: "Refreshing homemade lemonade." },
-                    { name: "Iced Coffee", image: "img/food/iced-coffee.jpg", price: 3.49, details: "Chilled coffee with milk and ice." },
-                ],
-                Desserts: [
-                    { name: "Cheesecake", image: "img/food/cheesecake.jpg", price: 5.99, details: "Classic creamy cheesecake with a graham crust." },
-                    { name: "Lava Cake", image: "img/food/lava-cake.jpg", price: 6.49, details: "Warm chocolate cake with a gooey center." },
-                ]
-            };
-
-            // Get search query from URL
-            function getQuery() {
-                const params = new URLSearchParams(window.location.search);
-                return params.get('q') ? params.get('q').trim() : '';
-            }
-
-            // Render search results
-            function renderSearchResults(query) {
-                const list = document.getElementById('food-search-list');
-                const title = document.getElementById('food-search-title');
-                if (title) title.innerHTML = `Foods on your search <a href=\"#\" class=\"text-white\">\"${query || ''}\"</a>`;
-                if (!query) {
-                    list.innerHTML = '<p class="text-center">Please enter a search term.</p>';
-                    return;
-                }
-                const results = [];
-                const q = query.toLowerCase();
-                Object.values(foodsByCategory).forEach(arr => {
-                    arr.forEach(food => {
-                        if (
-                            food.name.toLowerCase().includes(q) ||
-                            (food.details && food.details.toLowerCase().includes(q))
-                        ) {
-                            results.push(food);
-                        }
-                    });
+            const results = [];
+            const q = query.toLowerCase();
+            Object.values(foodsByCategory).forEach(arr => {
+                arr.forEach(food => {
+                    if (
+                        food.name.toLowerCase().includes(q) ||
+                        (food.details && food.details.toLowerCase().includes(q))
+                    ) {
+                        results.push(food);
+                    }
                 });
-                if (results.length === 0) {
-                    list.innerHTML = '<p class="text-center">No foods found for your search.</p>';
-                    return;
-                }
-                list.innerHTML = '';
-                results.forEach(food => {
-                    list.innerHTML += `
-                    <div class=\"food-menu-box\">
-                        <div class=\"food-menu-img\">
-                            <img src=\"${food.image}\" alt=\"${food.name}\" class=\"img-responsive img-curve\" loading=\"lazy\" width=\"120\" height=\"120\">\n+                        </div>
-                        <div class=\"food-menu-desc\">
-                            <h4>${food.name}</h4>
-                            <p class=\"food-price\">$${food.price.toFixed(2)}</p>
-                            <p class=\"food-details\">${food.details}</p>
-                            <form action=\"\" onsubmit=\"return false;\">
-                                <input type=\"number\" value=\"1\" min=\"1\" style=\"width:50px;\"> 
-                                <input type=\"submit\" value=\"Add to Cart\" class=\"btn-primary\">\n+                            </form>
-                        </div>
-                        <div style=\"clear:both;\"></div>
+            });
+            if (results.length === 0) {
+                list.innerHTML = '<p class="text-center">No foods found for your search.</p>';
+                return;
+            }
+            list.innerHTML = '';
+            results.forEach(food => {
+                list.innerHTML += `
+                <div class=\"food-menu-box\">
+                    <div class=\"food-menu-img\">
+                        <img src=\"${food.image}\" alt=\"${food.name}\" class=\"img-responsive img-curve\" loading=\"lazy\" width=\"120\" height=\"120\">\n                    </div>
+                    <div class=\"food-menu-desc\">
+                        <h4>${food.name}</h4>
+                        <p class=\"food-price\">$${food.price.toFixed(2)}</p>
+                        <p class=\"food-details\">${food.details}</p>
+                        <form>
+                            <input type=\"number\" value=\"1\" min=\"1\" style=\"width:50px;\"> \n                            <input type=\"submit\" value=\"Add to Cart\" class=\"btn-primary\">\n                        </form>
                     </div>
-                    `;
-                });
-            }
+                    <div style=\"clear:both;\"></div>
+                </div>
+                `;
+            });
+            setupAddToCart();
+        }
 
-            // Initial render
-            const query = getQuery();
-            renderSearchResults(query);
-            updateCartBadge();
-
-            // Event delegation for add-to-cart
-            document.getElementById('food-search-list').addEventListener('submit', function(e) {
-                if (e.target && e.target.tagName === 'FORM') {
+        // Single, robust Add to Cart logic
+        function setupAddToCart() {
+            document.querySelectorAll('.food-menu-box form').forEach(function(form) {
+                form.onsubmit = function(e) {
                     e.preventDefault();
-                    const box = e.target.closest('.food-menu-box');
+                    const box = form.closest('.food-menu-box');
                     const img = box.querySelector('.food-menu-img img').getAttribute('src');
                     const name = box.querySelector('.food-menu-desc h4').innerText;
                     const price = parseFloat(box.querySelector('.food-price').innerText.replace('$','').trim());
-                    const qty = parseInt(box.querySelector('input[type="number"]').value);
-                    addToCart({ image: img, name, price, qty });
-                    alert('Added to cart!');
-                }
-            });
-        });
-    })();
-    </script>
-                            <li>
-                                <a href="#" id="twitter-link"><img src="https://img.icons8.com/color/48/null/twitter--v1.png" alt="Twitter"/></a>
-                            </li>
-                            <li>
-                                <a href="https://www.linkedin.com/in/ghata-gideon-ghata-294b85357?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BkPIKn3ITS7SDvIeEV3CjcA%3D%3D" id="linkedin-link"><img src="https://img.icons8.com/color/48/null/linkedin-circled--v1.png" alt="LinkedIn"/></a>
-                            </li>
-                            <li>
-                                <a href="https://youtube.com/@triplegee3683?si=64WuEpUnzPJ3BNdW" id="youtube-link"><img src="https://img.icons8.com/color/48/null/youtube-play.png" alt="YouTube"/></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Footer Section End -->
+                    let qty = parseInt(box.querySelector('input[type="number"]').value);
+                    if (isNaN(qty) || qty < 1) qty = 1;
 
-    <!-- Copyright Section start -->
-    <section class="copyright">
-        <div class="container text-center">
-            <p>All rights reserved. Design By <a href="#">Gideon Ghata</a></p>
-        </div>
+                    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                    let found = cart.find(item => item.name === name);
+                    if (found) {
+                        found.qty += qty;
+                    } else {
+                        cart.push({ image: img, name, price, qty });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartBadge();
+                    alert('Added to cart!');
+                };
+            });
+        }
+
+        // Update cart badge
+        function updateCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            let badge = document.querySelector('.shopping-cart .badge');
+            if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+        }
+
+        // Initial render
+        const query = getQuery();
+        renderSearchResults(query);
+        updateCartBadge();
         <a id="back-to-top" class="btn-primary">
             <i class="fa fa-angle-double-up"></i>
         </a>
@@ -308,7 +303,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-// ...existing code...
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add to Cart logic for all forms
+    document.querySelectorAll('.food-menu-box form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const box = form.closest('.food-menu-box');
+            const img = box.querySelector('.food-menu-img img').getAttribute('src');
+            const name = box.querySelector('.food-menu-desc h4').innerText;
+            const price = parseFloat(box.querySelector('.food-price').innerText.replace('$','').trim());
+            const qty = parseInt(box.querySelector('input[type="number"]').value);
+
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            let found = cart.find(item => item.name === name);
+            if (found) {
+                found.qty += qty;
+            } else {
+                cart.push({ image: img, name, price, qty });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Added to cart!');
+        });
+    });
+});
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     function renderCart() {
