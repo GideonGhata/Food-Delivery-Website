@@ -23,181 +23,133 @@
                 <div class="logo">
                     <a href="index.html" title="Logo">
                         <img src="img/logo.png" alt="Logo" class="img-responsive">
-                    </a>
-                </div>
-                <!-- Main Menu -->
-                <div class="menu text-right">
-                    <ul>
-                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
-                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
-                        <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
-                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
-                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
-                        <li><a class="hvr-underline-from-center" href="login.html">Login</a></li>
-                        <li>
-                            <a id="shopping-cart" class="shopping-cart">
-                                <i class="fa fa-cart-arrow-down"></i>
-                                <span class="badge">4</span>
-                            </a>
-                            <div id="cart-content" class="cart-content">
-                                <h3 class="text-center">Shopping Cart</h3>
-                                <table class="cart-table" border="0">
-                                    <tr>
-                                        <th>Food</th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Qty</th>
-                                        <th>Total</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="img/food/p1.jpg" alt="Food"></td>
-                                        <td>Meals</td>
-                                        <td>$ 8.00</td>
-                                        <td>1</td>
-                                        <td>$ 8.00</td>
-                                        <td><a href="#" class="btn-delete">&times;</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="img/food/s1.jpg" alt="Food"></td>
-                                        <td>Sides</td>
-                                        <td>$ 8.00</td>
-                                        <td>1</td>
-                                        <td>$ 8.00</td>
-                                        <td><a href="#" class="btn-delete">&times;</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="img/food/b1.jpg" alt="Food"></td>
-                                        <td>Drinks</td>
-                                        <td>$ 8.00</td>
-                                        <td>1</td>
-                                        <td>$ 8.00</td>
-                                        <td><a href="#" class="btn-delete">&times;</a></td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="4">Total</th>
-                                        <th id="cart-total"></th>
-                                        <th></th>
-                                    </tr>
-                                </table>
-                                <a href="order.html" class="btn-primary">Confirm Order</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <!-- Navigation Section End -->
+                    <script>
+                    (function() {
+                        // --- Cart Utility Functions ---
+                        function getCart() {
+                            return JSON.parse(localStorage.getItem('cart') || '[]');
+                        }
+                        function setCart(cart) {
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                        }
+                        function updateCartBadge() {
+                            let cart = getCart();
+                            let badge = document.querySelector('.shopping-cart .badge');
+                            if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+                        }
+                        function addToCart({image, name, price, qty}) {
+                            let cart = getCart();
+                            let found = cart.find(item => item.name === name);
+                            if (found) {
+                                found.qty += qty;
+                            } else {
+                                cart.push({ image, name, price, qty });
+                            }
+                            setCart(cart);
+                            updateCartBadge();
+                        }
 
-    <!-- Food Search Section Start -->
-    <section class="food-search text-center">
-        <div class="container">
-            <h2 id="food-search-title" style="background: #44bd32;">
-                <!-- This will be set by JS -->
-            </h2>
-        </div>
-    </section>
-    <!-- Food Search Section End -->
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Category foods data
+                            const foodsByCategory = {
+                                Meals: [
+                                    { name: "Grilled Chicken Plate", image: "img/food/grilled-chicken.jpg", price: 12.99, details: "Juicy grilled chicken breast with rice and veggies." },
+                                    { name: "Beef Steak Dinner", image: "img/food/beef-steak.jpg", price: 16.99, details: "Tender beef steak served with mashed potatoes." }
+                                ],
+                                Sides: [
+                                    { name: "French Fries", image: "img/food/fries.jpg", price: 3.99, details: "Crispy golden fries with ketchup." },
+                                    { name: "Onion Rings", image: "img/food/onion-rings.jpg", price: 4.49, details: "Crunchy onion rings, perfect for sharing." }
+                                ],
+                                Wraps: [
+                                    { name: "Chicken Caesar Wrap", image: "img/food/caesar-wrap.jpg", price: 7.99, details: "Our Chicken Caesar Wrap recipe is everything you love about a classic Caesar salad, wrapped up in a soft tortilla for a quick, satisfying lunch or light dinner." },
+                                    { name: "Asian Chicken Wrap", image: "img/food/asian-chicken-wrap.jpg", price: 6.99, details: "Creamy. Crunchy. Spicy. Healthy. These Asian Chicken Wraps are a burst of color, rich flavors, and texture ready to devour in minutes." }
+                                ],
+                                Burgers: [
+                                    { name: "Classic Cheeseburger", image: "img/food/cheeseburger.jpg", price: 8.49, details: "Beef patty, cheddar cheese, lettuce, tomato, and pickles." },
+                                    { name: "Spicy Chicken Burger", image: "img/food/spicy-chicken-burger.jpg", price: 8.99, details: "Crispy chicken fillet with spicy mayo and slaw." }
+                                ],
+                                Drinks: [
+                                    { name: "Fresh Lemonade", image: "img/food/lemonade.jpg", price: 2.99, details: "Refreshing homemade lemonade." },
+                                    { name: "Iced Coffee", image: "img/food/iced-coffee.jpg", price: 3.49, details: "Chilled coffee with milk and ice." }
+                                ],
+                                Desserts: [
+                                    { name: "Chocolate Lava Cake", image: "img/food/lava-cake.jpg", price: 5.99, details: "Warm chocolate cake with a gooey center." },
+                                    { name: "Strawberry Cheesecake", image: "img/food/cheesecake.jpg", price: 5.49, details: "Creamy cheesecake topped with strawberries." }
+                                ]
+                            };
 
-    <!-- Foods Section Start -->
-    <section class="food-menu">
-    <div class="container">
-        <h2 class="text-center" id="category-title">Food Menu</h2>
-        <div class="heading-border"></div>
-        <div class="grid-2" id="food-list">
-            <!-- Foods will be injected here -->
-        </div>
-    </div>
-</section>
-<!-- Foods Section End -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Category foods data
-    const foodsByCategory = {
-        Meals: [
-            {
-                name: "Grilled Chicken Plate",
-                image: "img/food/grilled-chicken.jpg",
-                price: 12.99,
-                details: "Juicy grilled chicken breast with rice and veggies."
-            },
-            {
-                name: "Beef Steak Dinner",
-                image: "img/food/beef-steak.jpg",
-                price: 16.99,
-                details: "Tender beef steak served with mashed potatoes."
-            }
-        ],
-        Sides: [
-            {
-                name: "French Fries",
-                image: "img/food/fries.jpg",
-                price: 3.99,
-                details: "Crispy golden fries with ketchup."
-            },
-            {
-                name: "Onion Rings",
-                image: "img/food/onion-rings.jpg",
-                price: 4.49,
-                details: "Crunchy onion rings, perfect for sharing."
-            }
-        ],
-        Wraps: [
-            {
-                name: "Chicken Caesar Wrap",
-                image: "img/food/caesar-wrap.jpg",
-                price: 7.99,
-                details: "Our Chicken Caesar Wrap recipe is everything you love about a classic Caesar salad, wrapped up in a soft tortilla for a quick, satisfying lunch or light dinner."
-            },
-            {
-                name: "Asian Chicken Wrap",
-                image: "img/food/asian-chicken-wrap.jpg",
-                price: 6.99,
-                details: "Creamy. Crunchy. Spicy. Healthy. These Asian Chicken Wraps are a burst of color, rich flavors, and texture ready to devour in minutes."
-            }
-        ],
-        Burgers: [
-            {
-                name: "Classic Cheeseburger",
-                image: "img/food/cheeseburger.jpg",
-                price: 8.49,
-                details: "Beef patty, cheddar cheese, lettuce, tomato, and pickles."
-            },
-            {
-                name: "Spicy Chicken Burger",
-                image: "img/food/spicy-chicken-burger.jpg",
-                price: 8.99,
-                details: "Crispy chicken fillet with spicy mayo and slaw."
-            }
-        ],
-        Drinks: [
-            {
-                name: "Fresh Lemonade",
-                image: "img/food/lemonade.jpg",
-                price: 2.99,
-                details: "Refreshing homemade lemonade."
-            },
-            {
-                name: "Iced Coffee",
-                image: "img/food/iced-coffee.jpg",
-                price: 3.49,
-                details: "Chilled coffee with milk and ice."
-            }
-        ],
-        Desserts: [
-            {
-                name: "Chocolate Lava Cake",
-                image: "img/food/lava-cake.jpg",
-                price: 5.99,
-                details: "Warm chocolate cake with a gooey center."
-            },
-            {
-                name: "Strawberry Cheesecake",
-                image: "img/food/cheesecake.jpg",
-                price: 5.49,
-                details: "Creamy cheesecake topped with strawberries."
-            }
+                            // Get category from URL
+                            function getCategory() {
+                                const params = new URLSearchParams(window.location.search);
+                                return params.get('cat') || 'Meals';
+                            }
+
+                            // Render foods for the selected category
+                            function renderFoods(category) {
+                                const foodList = document.getElementById('food-list');
+                                const foods = foodsByCategory[category] || [];
+                                const title = document.getElementById('category-title');
+                                if (title) title.textContent = category + " Menu";
+                                foodList.innerHTML = '';
+                                if (foods.length === 0) {
+                                    foodList.innerHTML = '<p class="text-center">No foods found for this category.</p>';
+                                    return;
+                                }
+                                foods.forEach(food => {
+                                    foodList.innerHTML += `
+                                        <div class="food-menu-box">
+                                            <form>
+                                                <div class="food-menu-img">
+                                                    <img src="${food.image}" alt="${food.name}" class="img-responsive img-curve">
+                                                </div>
+                                                <div class="food-menu-desc">
+                                                    <h4>${food.name}</h4>
+                                                    <p class="food-price">$${food.price.toFixed(2)}</p>
+                                                    <p class="food-details">${food.details}</p>
+                                                    <input type="number" value="1" min="1">
+                                                    <input type="submit" class="btn-primary" value="Add To Cart">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    `;
+                                });
+                            }
+
+                            // Initial render
+                            const category = getCategory();
+                            renderFoods(category);
+                            updateCartBadge();
+
+                            // Event delegation for add-to-cart
+                            document.getElementById('food-list').addEventListener('submit', function(e) {
+                                if (e.target && e.target.tagName === 'FORM') {
+                                    e.preventDefault();
+                                    const box = e.target.closest('.food-menu-box');
+                                    const img = box.querySelector('.food-menu-img img').getAttribute('src');
+                                    const name = box.querySelector('.food-menu-desc h4').innerText;
+                                    const price = parseFloat(box.querySelector('.food-price').innerText.replace('$','').trim());
+                                    const qty = parseInt(box.querySelector('input[type="number"]').value);
+                                    addToCart({ image: img, name, price, qty });
+                                    alert('Added to cart!');
+                                }
+                            });
+                        });
+                    })();
+                    </script>
+                                // Event delegation for add-to-cart
+                                document.getElementById('food-list').addEventListener('submit', function(e) {
+                                    if (e.target && e.target.tagName === 'FORM') {
+                                        e.preventDefault();
+                                        const box = e.target.closest('.food-menu-box');
+                                        const img = box.querySelector('.food-menu-img img').getAttribute('src');
+                                        const name = box.querySelector('.food-menu-desc h4').innerText;
+                                        const price = parseFloat(box.querySelector('.food-price').innerText.replace('$','').trim());
+                                        const qty = parseInt(box.querySelector('input[type="number"]').value);
+                                        addToCart({ image: img, name, price, qty });
+                                        alert('Added to cart!');
+                                    }
+                                });
+                            });
         ]
     };
 
@@ -344,31 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Optionally, update the dropdown cart table here as well
 });
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add to Cart logic for all forms
-    document.querySelectorAll('.food-menu-box form').forEach(function(form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const box = form.closest('.food-menu-box');
-            const img = box.querySelector('.food-menu-img img').getAttribute('src');
-            const name = box.querySelector('.food-menu-desc h4').innerText;
-            const price = parseFloat(box.querySelector('.food-price').innerText.replace('$','').trim());
-            const qty = parseInt(box.querySelector('input[type="number"]').value);
-
-            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            let found = cart.find(item => item.name === name);
-            if (found) {
-                found.qty += qty;
-            } else {
-                cart.push({ image: img, name, price, qty });
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert('Added to cart!');
-        });
-    });
-});
-</script>
+// ...existing code...
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Get category from URL
