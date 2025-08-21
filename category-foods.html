@@ -73,14 +73,14 @@
                                                 <tr>
                                                     <td><img src="${item.image}" alt="Food" style="width:40px;height:40px;"></td>
                                                     <td>${item.name}</td>
-                                                    <td>$${item.price.toFixed(2)}</td>
+                                                    <td>$${item.price.toFixed(1)}</td>
                                                     <td>${item.qty}</td>
-                                                    <td>$${itemTotal.toFixed(2)}</td>
+                                                    <td>$${itemTotal.toFixed(1)}</td>
                                                     <td><a href="#" class="btn-delete" data-idx="${idx}">&times;</a></td>
                                                 </tr>
                                             `;
                                         });
-                                        totalCell.textContent = '$' + total.toFixed(2);
+                                        totalCell.textContent = '$' + total.toFixed(1);
                                         // Update badge
                                         let badge = document.querySelector('.shopping-cart .badge');
                                         if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
