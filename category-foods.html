@@ -50,35 +50,59 @@
                                         <th>Total</th>
                                         <th>Action</th>
                                     </tr>
-                                    <tr>
-                                        <td><img src="img/food/p1.jpg" alt="Food"></td>
-                                        <td>Meals</td>
-                                        <td>$ 8.00</td>
-                                        <td>1</td>
-                                        <td>$ 8.00</td>
-                                        <td><a href="#" class="btn-delete">&times;</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="img/food/s1.jpg" alt="Food"></td>
-                                        <td>Sides</td>
-                                        <td>$ 8.00</td>
-                                        <td>1</td>
-                                        <td>$ 8.00</td>
-                                        <td><a href="#" class="btn-delete">&times;</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="img/food/b1.jpg" alt="Food"></td>
-                                        <td>Drinks</td>
-                                        <td>$ 8.00</td>
-                                        <td>1</td>
-                                        <td>$ 8.00</td>
-                                        <td><a href="#" class="btn-delete">&times;</a></td>
-                                    </tr>
+                                    <tbody id="cart-table-body"></tbody>
+                                        <!-- Cart items will be dynamically inserted here -->
+                                    </tbody>
                                     <tr>
                                         <th colspan="4">Total</th>
                                         <th id="cart-total"></th>
                                         <th></th>
                                     </tr>
+                                    <script>
+                                    function renderCart() {
+                                        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                                        const tbody = document.getElementById('cart-table-body');
+                                        const totalCell = document.getElementById('cart-total');
+                                        let total = 0;
+                                        tbody.innerHTML = '';
+                                        cart.forEach((item, idx) => {
+                                            const itemTotal = (item.price * item.qty);
+                                            total += itemTotal;
+                                            tbody.innerHTML += `
+                                                <tr>
+                                                    <td><img src="${item.image}" alt="Food" style="width:40px;height:40px;"></td>
+                                                    <td>${item.name}</td>
+                                                    <td>$${item.price.toFixed(2)}</td>
+                                                    <td>${item.qty}</td>
+                                                    <td>$${itemTotal.toFixed(2)}</td>
+                                                    <td><a href="#" class="btn-delete" data-idx="${idx}">&times;</a></td>
+                                                </tr>
+                                            `;
+                                        });
+                                        totalCell.textContent = '$' + total.toFixed(2);
+
+                                        // Delete handler
+                                        tbody.querySelectorAll('.btn-delete').forEach(btn => {
+                                            btn.onclick = function(e) {
+                                                e.preventDefault();
+                                                const idx = parseInt(this.getAttribute('data-idx'));
+                                                cart.splice(idx, 1);
+                                                localStorage.setItem('cart', JSON.stringify(cart));
+                                                renderCart();
+                                                // Update badge
+                                                let badge = document.querySelector('.shopping-cart .badge');
+                                                if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+                                            };
+                                        });
+                                    }
+
+                                    // Render cart on page load and after add-to-cart
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        renderCart();
+                                        // Update badge when cart changes elsewhere
+                                        window.renderCart = renderCart;
+                                    });
+                                    </script>
                                 </table>
                                 <a href="order.html" class="btn-primary">Confirm Order</a>
                             </div>
