@@ -54,7 +54,11 @@
                                     </thead>
                                     <tbody id="cart-table-body"></tbody>
                                     <tfoot>
-                                        <tr id="cart-total-row"></tr>
+                                        <tr>
+                                            <th colspan="4">Total</th>
+                                            <th id="cart-total"></th>
+                                            <th></th>
+                                        </tr>
                                     </tfoot>
                                 </table>
                                 <a href="order.html" class="btn-primary">Confirm Order</a>
@@ -66,88 +70,13 @@
         </nav>
     </header>
     <!-- Navigation Section End -->
-        // Render search results and attach add-to-cart listeners
-        function renderSearchResults(query) {
-            const list = document.getElementById('food-search-list');
-            const title = document.getElementById('food-search-title');
-            if (title) title.innerHTML = `Foods on your search <a href=\"#\" class=\"text-white\">\"${query || ''}\"</a>`;
-            if (!query) {
-                list.innerHTML = '<p class="text-center">Please enter a search term.</p>';
-                return;
-            }
-            const results = [];
-            const q = query.toLowerCase();
-            Object.values(foodsByCategory).forEach(arr => {
-                arr.forEach(food => {
-                    if (
-                        food.name.toLowerCase().includes(q) ||
-                        (food.details && food.details.toLowerCase().includes(q))
-                    ) {
-                        results.push(food);
-                    }
-                });
-            });
-            if (results.length === 0) {
-                list.innerHTML = '<p class="text-center">No foods found for your search.</p>';
-                return;
-            }
-            list.innerHTML = '';
-            results.forEach(food => {
-                list.innerHTML += `
-                <div class=\"food-menu-box\">
-                    <div class=\"food-menu-img\">
-                        <img src=\"${food.image}\" alt=\"${food.name}\" class=\"img-responsive img-curve\" loading=\"lazy\" width=\"120\" height=\"120\">\n                    </div>
-                    <div class=\"food-menu-desc\">
-                        <h4>${food.name}</h4>
-                        <p class=\"food-price\">$${food.price.toFixed(2)}</p>
-                        <p class=\"food-details\">${food.details}</p>
-                        <form>
-                            <input type=\"number\" value=\"1\" min=\"1\" style=\"width:50px;\"> \n                            <input type=\"submit\" value=\"Add to Cart\" class=\"btn-primary\">\n                        </form>
-                    </div>
-                    <div style=\"clear:both;\"></div>
-                </div>
-                `;
-            });
-            setupAddToCart();
-        }
 
-        // Single, robust Add to Cart logic
-        function setupAddToCart() {
-            document.querySelectorAll('.food-menu-box form').forEach(function(form) {
-                form.onsubmit = function(e) {
-                    e.preventDefault();
-                    const box = form.closest('.food-menu-box');
-                    const img = box.querySelector('.food-menu-img img').getAttribute('src');
-                    const name = box.querySelector('.food-menu-desc h4').innerText;
-                    const price = parseFloat(box.querySelector('.food-price').innerText.replace('$','').trim());
-                    let qty = parseInt(box.querySelector('input[type="number"]').value);
-                    if (isNaN(qty) || qty < 1) qty = 1;
-
-                    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                    let found = cart.find(item => item.name === name);
-                    if (found) {
-                        found.qty += qty;
-                    } else {
-                        cart.push({ image: img, name, price, qty });
-                    }
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCartBadge();
-                    alert('Added to cart!');
-                };
-            });
-        }
-
-        // Update cart badge
-        function updateCartBadge() {
-            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            let badge = document.querySelector('.shopping-cart .badge');
-            if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-        }
-
-        // Initial render
-        const query = getQuery();
-        renderSearchResults(query);
-        updateCartBadge();
+    <!-- Food Search Results Section Start -->
+    <section class="food-search-results">
+        <div class="container">
+            <h2 id="food-search-title" class="text-center"></h2>
+            <div id="food-search-list"></div>
+        </div>
         <a id="back-to-top" class="btn-primary">
             <i class="fa fa-angle-double-up"></i>
         </a>
