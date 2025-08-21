@@ -84,20 +84,23 @@
             <div class="heading-border"></div>
 
             <form action="" class="form">
-                <fieldset>
-                    <legend>Contact Us</legend>
-                    <p class="label">Full Name</p>
-                    <input type="text" placeholder="Enter your name..." required>
-                    <p class="label">Email</p>
-                    <input type="email" placeholder="Enter your email..." required>
-                    <p class="label">Phone Number</p>
-                    <input type="contact" placeholder="Enter your phone..." required>
-                    <p class="label">Subject</p>
-                    <input type="text" placeholder="Enter your subject..." required>
-                    <p class="label">Message</p>
-                    <textarea name="" id="" rows="5" placeholder="Enter your message..." required></textarea>
-                    <input type="submit" value="Submit" class="btn-primary">
-                </fieldset>
+                                <form action="https://formspree.io/f/mpwlggod" method="POST" class="form" id="contact-form">
+                                    <fieldset>
+                                        <legend>Contact Us</legend>
+                                        <p class="label">Full Name</p>
+                                        <input type="text" name="name" placeholder="Enter your name..." required>
+                                        <p class="label">Email</p>
+                                        <input type="email" name="email" placeholder="Enter your email..." required>
+                                        <p class="label">Phone Number</p>
+                                        <input type="text" name="phone" placeholder="Enter your phone..." required>
+                                        <p class="label">Subject</p>
+                                        <input type="text" name="subject" placeholder="Enter your subject..." required>
+                                        <p class="label">Message</p>
+                                        <textarea name="message" rows="5" placeholder="Enter your message..." required></textarea>
+                                        <input type="submit" value="Submit" class="btn-primary">
+                                    </fieldset>
+                                </form>
+                                <div id="form-success" style="display:none;color:green;text-align:center;margin-top:10px;">Thank you! Your message has been sent.</div>
             </form>
         </div>
     </section>
@@ -173,7 +176,22 @@
     <!-- Jquery UI -->
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <!-- Custom JS -->
-    <script src="js/custom.js"></script>
+        <script src="js/custom.js"></script>
+        <script>
+        // Show a success message after submit (for Formspree)
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('contact-form');
+            if(form) {
+                form.addEventListener('submit', function(e) {
+                    setTimeout(function() {
+                        form.style.display = 'none';
+                        var msg = document.getElementById('form-success');
+                        if(msg) msg.style.display = 'block';
+                    }, 100);
+                });
+            }
+        });
+        </script>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     function renderCart() {
