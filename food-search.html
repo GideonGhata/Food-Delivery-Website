@@ -54,11 +54,7 @@
                                     </thead>
                                     <tbody id="cart-table-body"></tbody>
                                     <tfoot>
-                                        <tr>
-                                            <th colspan="4">Total</th>
-                                            <th id="cart-total"></th>
-                                            <th></th>
-                                        </tr>
+                                        <tr id="cart-total-row"></tr>
                                     </tfoot>
                                 </table>
                                 <a href="order.html" class="btn-primary">Confirm Order</a>
@@ -71,11 +67,75 @@
     </header>
     <!-- Navigation Section End -->
 
-    <!-- Food Search Results Section Start -->
-    <section class="food-search-results">
+    <!-- Food Search Section Start -->
+    <section class="food-search text-center" >
         <div class="container">
-            <h2 id="food-search-title" class="text-center"></h2>
-            <div id="food-search-list"></div>
+            <h2 id="food-search-title" style="background: #44bd32;"></h2>
+        </div>
+    </section>
+    <!-- Food Search Section End -->
+
+    <!-- Foods Section Start -->
+    <section class="food-menu">
+        <div class="container">
+            <h2 class="text-center">Food Menu</h2>
+            <div class="heading-border"></div>
+            <div class="grid-2" id="food-search-list">
+                <!-- Search results will be injected here -->
+            </div>
+        </div>
+    </section>
+    <!-- Foods Section End -->
+
+    <!-- Footer Section Start -->
+    <section class="footer">
+        <div class="container">
+            <div class="grid-3">
+                <div class="text-center">
+                    <h3>About Us</h3><br>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat officia, temporibus expedita dicta eligendi harum architecto fugiat sint, laudantium omnis animi. Voluptas praesentium maiores minima pariatur necessitatibus consequuntur, similique assumenda.</p>
+                </div>
+                <div class="texr-center">
+                    <h3>Site Map</h3><br>
+                    <div class="site-links">
+                        <a href="categories.html">Categories</a>
+                        <a href="foods.html">Foods</a>
+                        <a href="order.html">Order</a>
+                        <a href="contact.html">Contact</a>
+                        <a href="login.html">Login</a>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <h3>Social Links</h3><br>
+                    <div class="social">
+                        <ul>
+                            <li>
+                                <a href="https://www.facebook.com/share/177LwzV2vb/?mibextid=wwXIfr" id="facebook-link"><img src="https://img.icons8.com/color/48/null/facebook-new.png" alt="Facebook"/></a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/gghata34?igsh=YzFvbDV3bjJxYXNl&utm_source=qr" id="instagram-link"><img src="https://img.icons8.com/fluency/48/null/instagram-new.png" alt="Instagram"/></a>
+                            </li>
+                            <li>
+                                <a href="#" id="twitter-link"><img src="https://img.icons8.com/color/48/null/twitter--v1.png" alt="Twitter"/></a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/in/ghata-gideon-ghata-294b85357?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BkPIKn3ITS7SDvIeEV3CjcA%3D%3D" id="linkedin-link"><img src="https://img.icons8.com/color/48/null/linkedin-circled--v1.png" alt="LinkedIn"/></a>
+                            </li>
+                            <li>
+                                <a href="https://youtube.com/@triplegee3683?si=64WuEpUnzPJ3BNdW" id="youtube-link"><img src="https://img.icons8.com/color/48/null/youtube-play.png" alt="YouTube"/></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section End -->
+
+    <!-- Copyright Section start -->
+    <section class="copyright">
+        <div class="container text-center">
+            <p>All rights reserved. Design By <a href="#">Gideon Ghata</a></p>
         </div>
         <a id="back-to-top" class="btn-primary">
             <i class="fa fa-angle-double-up"></i>
