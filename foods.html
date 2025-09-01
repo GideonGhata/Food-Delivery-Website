@@ -124,20 +124,42 @@
                         <a href="login.html">Login</a>
                     </div>
                 </div>
-                <div class="social-links">
-                    <h3>Social Links</h3><br>
-                    <div class="social">
-                        <ul>
-                            <li>
-                                <a href="https://www.facebook.com/share/177LwzV2vb/?mibextid=wwXIfr" id="facebook-link"><img src="https://img.icons8.com/color/48/null/facebook-new.png" alt="Facebook"/></a>
-                            </li>
-                            <li>
-                                <a href="https://www.instagram.com/gghata34?igsh=YzFvbDV3bjJxYXNl&utm_source=qr" id="instagram-link"><img src="https://img.icons8.com/fluency/48/null/instagram-new.png" alt="Instagram"/></a>
-                            </li>
-                            <li>
-                                <a href="#" id="twitter-link"><img src="https://img.icons8.com/color/48/null/twitter--v1.png" alt="Twitter"/></a>
-                            </li>
-                            <li>
+        <!-- Sidebar Navigation Start -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <a href="index.html"><img src="img/logo.png" alt="Logo" class="img-responsive" style="max-width:90px;"></a>
+                </div>
+                <button id="sidebar-toggle" class="sidebar-toggle"><i class="fa fa-bars"></i></button>
+            </div>
+            <div id="sidebar-welcome" class="sidebar-welcome"></div>
+            <ul id="sidebar-menu" class="sidebar-menu"></ul>
+            <button id="sidebar-logout" class="sidebar-logout" style="display:none;"><i class="fa fa-sign-out"></i> Logout</button>
+        </nav>
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+        <!-- Sidebar Navigation End -->
+    <style>
+    /* Sidebar styles */
+    .sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: 240px; background: #fff; box-shadow: 2px 0 8px rgba(0,0,0,0.08); z-index: 2000; display: flex; flex-direction: column; transition: transform 0.3s ease; }
+    .sidebar.collapsed { transform: translateX(-100%); }
+    .sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 18px 10px 18px; }
+    .sidebar-toggle { background: none; border: none; font-size: 1.5em; cursor: pointer; }
+    .sidebar-welcome { padding: 0 18px 18px 18px; font-weight: bold; color: #44bd32; }
+    .sidebar-menu { list-style: none; padding: 0 0 0 0; margin: 0; flex: 1 1 auto; }
+    .sidebar-menu li { padding: 12px 24px; font-size: 1.1em; border-bottom: 1px solid #f0f0f0; }
+    .sidebar-menu li a { color: #2f3542; text-decoration: none; display: block; width: 100%; }
+    .sidebar-menu li a:hover { color: #44bd32; }
+    .sidebar-logout { margin: 18px; background: #e24a4a; color: #fff; border: none; border-radius: 5px; padding: 10px 0; font-size: 1.1em; cursor: pointer; width: calc(100% - 36px); }
+    .sidebar-logout:hover { background: #6c5ce7; }
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.25); z-index: 1999; }
+    @media (max-width: 900px) { .sidebar { width: 80vw; min-width: 180px; max-width: 320px; } }
+    @media (max-width: 700px) { .sidebar { width: 90vw; min-width: 120px; max-width: 100vw; } }
+    @media (max-width: 700px) { .sidebar { font-size: 0.98em; } }
+    body.sidebar-open { overflow: hidden; }
+    .sidebar.collapsed + .sidebar-overlay { display: none; }
+    .sidebar:not(.collapsed) + .sidebar-overlay { display: block; }
+    @media (max-width: 900px) { .sidebar:not(.collapsed) + .sidebar-overlay { display: block; } }
+    </style>
                                 <a href="https://www.linkedin.com/in/ghata-gideon-ghata-294b85357?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BkPIKn3ITS7SDvIeEV3CjcA%3D%3D" id="linkedin-link"><img src="https://img.icons8.com/color/48/null/linkedin-circled--v1.png" alt="LinkedIn"/></a>
                             </li>
                             <li>
@@ -219,66 +241,62 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'index.html';
         }
     });
-    // Render cart in dropdown
-    function renderCart() {
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        let badge = document.querySelector('.shopping-cart .badge');
-        let tbody = document.getElementById('cart-table-body');
-        let totalRow = document.getElementById('cart-total-row');
-        let total = 0;
-
-        if (badge) badge.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-        if (tbody) tbody.innerHTML = '';
-        if (totalRow) totalRow.innerHTML = '';
-
-        if (cart.length === 0) {
-            if (tbody) {
-                let row = document.createElement('tr');
-                let cell = document.createElement('td');
-                cell.colSpan = 6;
-                cell.innerText = 'Your cart is empty.';
-                cell.style.textAlign = 'center';
-                row.appendChild(cell);
-                tbody.appendChild(row);
-            }
+    // Sidebar logic
+    function renderSidebar() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        const sidebarWelcome = document.getElementById('sidebar-welcome');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const sidebarLogout = document.getElementById('sidebar-logout');
+        if (user) {
+            sidebarWelcome.innerHTML = `Welcome, <b>${user.name}</b>`;
         } else {
-            cart.forEach((item, idx) => {
-                let row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><img src="${item.image}" alt="Food" style="width:40px;height:40px;"></td>
-                    <td>${item.name}</td>
-                    <td>$ ${item.price.toFixed(2)}</td>
-                    <td>${item.qty}</td>
-                    <td>$ ${(item.price * item.qty).toFixed(2)}</td>
-                    <td><a href="#" class="btn-delete" data-index="${idx}">&times;</a></td>
-                `;
-                tbody.appendChild(row);
-                total += item.price * item.qty;
-            });
-            if (totalRow) {
-                totalRow.innerHTML = `
-                    <th colspan="4">Total</th>
-                    <th>$${total.toFixed(2)}</th>
-                    <th></th>
-                `;
-            }
+            sidebarWelcome.innerHTML = '';
+        }
+        sidebarMenu.innerHTML = '';
+        sidebarMenu.innerHTML += '<li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>';
+        sidebarMenu.innerHTML += '<li><a href="categories.html"><i class="fa fa-list"></i> Categories</a></li>';
+        sidebarMenu.innerHTML += '<li><a href="order.html"><i class="fa fa-cutlery"></i> Order</a></li>';
+        sidebarMenu.innerHTML += '<li><a href="contact.html"><i class="fa fa-envelope"></i> Contact</a></li>';
+        if (user) {
+            sidebarMenu.innerHTML += '<li><a href="profile.html"><i class="fa fa-user"></i> Profile</a></li>';
+            sidebarLogout.style.display = 'block';
+        } else {
+            sidebarMenu.innerHTML += '<li><a href="login.html"><i class="fa fa-sign-in"></i> Login</a></li>';
+            sidebarLogout.style.display = 'none';
         }
     }
-
-    renderCart();
-
-    document.getElementById('cart-content').addEventListener('click', function(e) {
-        if (e.target.classList.contains('btn-delete')) {
-            e.preventDefault();
-            let index = e.target.getAttribute('data-index');
-            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
+    renderSidebar();
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        document.body.classList.toggle('sidebar-open', !sidebar.classList.contains('collapsed'));
+        sidebarOverlay.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'block';
+    });
+    sidebarOverlay.addEventListener('click', function() {
+        sidebar.classList.add('collapsed');
+        document.body.classList.remove('sidebar-open');
+        sidebarOverlay.style.display = 'none';
+    });
+    // Logout
+    document.getElementById('sidebar-logout').addEventListener('click', function() {
+        localStorage.removeItem('user');
+        renderSidebar();
+        window.location.href = 'index.html';
+    });
+    // Responsive: collapse sidebar by default on small screens
+    if (window.innerWidth < 900) {
+        sidebar.classList.add('collapsed');
+    }
+    window.addEventListener('resize', function() {
+        if (window.innerWidth < 900) {
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
         }
     });
+    // Update sidebar on login/register
+    window.renderSidebar = renderSidebar;
 });
-    </script>
-</body>
-
-</html>

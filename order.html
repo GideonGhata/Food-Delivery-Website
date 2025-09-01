@@ -41,24 +41,40 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Section Start -->
-    <header class="navbar">
-        <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
-            <div class="container">
-                <div class="logo">
-                    <a href="index.html" title="Logo">
-                        <img src="img/logo.png" alt="Logo" class="img-responsive">
-                    </a>
-                </div>
-                <div class="menu text-right">
-                    <ul id="nav-menu">
-                        <!-- Dynamic menu will be rendered here -->
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <!-- Navigation Section End -->
+    <!-- Sidebar Navigation Start -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <img src="img/logo.png" alt="Logo" style="height:40px;">
+            <button id="sidebar-toggle" class="sidebar-toggle"><i class="fa fa-bars"></i></button>
+        </div>
+        <div id="sidebar-welcome" class="sidebar-welcome"></div>
+        <ul id="sidebar-menu" class="sidebar-menu"></ul>
+        <button id="sidebar-logout" class="sidebar-logout" style="display:none;"><i class="fa fa-sign-out"></i> Logout</button>
+    </nav>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <!-- Sidebar Navigation End -->
+    <style>
+    /* Sidebar styles */
+    .sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: 240px; background: #fff; box-shadow: 2px 0 8px rgba(0,0,0,0.08); z-index: 2000; display: flex; flex-direction: column; transition: transform 0.3s ease; }
+    .sidebar.collapsed { transform: translateX(-100%); }
+    .sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 18px 10px 18px; }
+    .sidebar-toggle { background: none; border: none; font-size: 1.5em; cursor: pointer; }
+    .sidebar-welcome { padding: 0 18px 18px 18px; font-weight: bold; color: #44bd32; }
+    .sidebar-menu { list-style: none; padding: 0 0 0 0; margin: 0; flex: 1 1 auto; }
+    .sidebar-menu li { padding: 12px 24px; font-size: 1.1em; border-bottom: 1px solid #f0f0f0; }
+    .sidebar-menu li a { color: #2f3542; text-decoration: none; display: block; width: 100%; }
+    .sidebar-menu li a:hover { color: #44bd32; }
+    .sidebar-logout { margin: 18px; background: #e24a4a; color: #fff; border: none; border-radius: 5px; padding: 10px 0; font-size: 1.1em; cursor: pointer; width: calc(100% - 36px); }
+    .sidebar-logout:hover { background: #6c5ce7; }
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.25); z-index: 1999; }
+    @media (max-width: 900px) { .sidebar { width: 80vw; min-width: 180px; max-width: 320px; } }
+    @media (max-width: 700px) { .sidebar { width: 90vw; min-width: 120px; max-width: 100vw; } }
+    @media (max-width: 700px) { .sidebar { font-size: 0.98em; } }
+    body.sidebar-open { overflow: hidden; }
+    .sidebar.collapsed + .sidebar-overlay { display: none; }
+    .sidebar:not(.collapsed) + .sidebar-overlay { display: block; }
+    @media (max-width: 900px) { .sidebar:not(.collapsed) + .sidebar-overlay { display: block; } }
+    </style>
 
     <!-- Location Selection Section Start -->
     <section class="order">
@@ -143,73 +159,90 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
     <script>
+    // Sidebar logic
+    function renderSidebar() {
+        var user = JSON.parse(localStorage.getItem('user') || 'null');
+        var sidebarWelcome = document.getElementById('sidebar-welcome');
+        var sidebarMenu = document.getElementById('sidebar-menu');
+        var sidebarLogout = document.getElementById('sidebar-logout');
+        if (sidebarWelcome) {
+            if (user) {
+                sidebarWelcome.innerHTML = 'Welcome, <b>' + user.name + '</b>';
+            } else {
+                sidebarWelcome.innerHTML = 'Welcome, Guest';
+            }
+        }
+        if (sidebarMenu) {
+            sidebarMenu.innerHTML = '';
+            sidebarMenu.innerHTML += '<li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>';
+            sidebarMenu.innerHTML += '<li><a href="categories.html"><i class="fa fa-list"></i> Categories</a></li>';
+            sidebarMenu.innerHTML += '<li><a href="foods.html"><i class="fa fa-map-marker"></i> Our Locations</a></li>';
+            sidebarMenu.innerHTML += '<li><a href="order.html"><i class="fa fa-cutlery"></i> Order</a></li>';
+            sidebarMenu.innerHTML += '<li><a href="contact.html"><i class="fa fa-envelope"></i> Contact</a></li>';
+            if (user) {
+                sidebarMenu.innerHTML += '<li><a href="profile.html"><i class="fa fa-user"></i> Profile</a></li>';
+                if (sidebarLogout) sidebarLogout.style.display = 'block';
+            } else {
+                if (sidebarLogout) sidebarLogout.style.display = 'none';
+            }
+        }
+    }
+    renderSidebar();
+    // Sidebar toggle
+    var sidebar = document.getElementById('sidebar');
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+    var sidebarOverlay = document.getElementById('sidebar-overlay');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            document.body.classList.toggle('sidebar-open', !sidebar.classList.contains('collapsed'));
+            if (sidebarOverlay) sidebarOverlay.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'block';
+        });
+    }
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.add('collapsed');
+            document.body.classList.remove('sidebar-open');
+            sidebarOverlay.style.display = 'none';
+        });
+    }
+    // Logout
+    var logoutBtn = document.getElementById('sidebar-logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('user');
+            renderSidebar();
+            window.location.href = 'index.html';
+        });
+    }
+    // Responsive: collapse sidebar by default on small screens
+    if (window.innerWidth < 900) {
+        sidebar.classList.add('collapsed');
+    }
+    window.addEventListener('resize', function() {
+        if (window.innerWidth < 900) {
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+        }
+    });
+    // Update sidebar on login/register
+    window.renderSidebar = renderSidebar;
+    // End sidebar logic
+    </script>
+    <script>
     // Mapbox access token
     mapboxgl.accessToken = 'pk.eyJ1IjoiZy1naGF0YSIsImEiOiJjbWUxYmtiMzEwOWswMm1yMjRkMWxqOHRjIn0.8zQJC4rxbUUDzCO_mSNw1g';
-
     let map, marker, geocoder;
-
     // Abuja bounding box: [minLng, minLat, maxLng, maxLat]
     const abujaBbox = [7.2, 8.8, 7.7, 9.2];
-
     function isWithinAbuja(lng, lat) {
         return (
             lng >= abujaBbox[0] && lng <= abujaBbox[2] &&
             lat >= abujaBbox[1] && lat <= abujaBbox[3]
         );
     }
-
     document.addEventListener('DOMContentLoaded', function() {
-        // Dynamic Navbar
-        function renderNav() {
-            const nav = document.getElementById('nav-menu');
-            if (!nav) return;
-            const user = JSON.parse(localStorage.getItem('user') || 'null');
-            nav.innerHTML = '';
-            nav.innerHTML += '<li><a class="hvr-underline-from-center" href="index.html">Home</a></li>';
-            nav.innerHTML += '<li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>';
-            nav.innerHTML += '<li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>';
-            nav.innerHTML += '<li><a class="hvr-underline-from-center" href="order.html">Order</a></li>';
-            nav.innerHTML += '<li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>';
-            nav.innerHTML += '<li>\
-                <a id="shopping-cart" class="shopping-cart">\
-                    <i class="fa fa-cart-arrow-down"></i>\
-                    <span class="badge">' + (JSON.parse(localStorage.getItem('cart') || '[]').reduce((sum, item) => sum + item.qty, 0)) + '</span>\
-                </a>\
-                <div id="cart-content" class="cart-content">\
-                    <h3 class="text-center">Shopping Cart</h3>\
-                    <table class="cart-table" border="0">\
-                        <thead>\
-                            <tr>\
-                                <th>Food</th>\
-                                <th>Name</th>\
-                                <th>Price</th>\
-                                <th>Qty</th>\
-                                <th>Total</th>\
-                                <th>Action</th>\
-                            </tr>\
-                        </thead>\
-                        <tbody id="cart-table-body"></tbody>\
-                        <tfoot>\
-                            <tr id="cart-total-row"></tr>\
-                        </tfoot>\
-                    </table>\
-                    <a href="order.html" class="btn-primary">Confirm Order</a>\
-                </div>\
-            </li>';
-            if (user) {
-                nav.innerHTML += `<li>Welcome, <b>${user.name}</b></li><li><a href="profile.html">Profile</a></li><li><a href="#" id="logout-link">Logout</a></li>`;
-            } else {
-                nav.innerHTML += '<li><a href="login.html">Login</a></li>';
-            }
-        }
-        renderNav();
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.id === 'logout-link') {
-                localStorage.removeItem('user');
-                renderNav();
-                window.location.href = 'index.html';
-            }
-        });
         // Satellite view for detailed buildings etc.
         map = new mapboxgl.Map({
             container: 'map',
@@ -220,9 +253,7 @@
             bearing: 0,
             maxBounds: abujaBbox // Prevents panning outside Abuja
         });
-
         map.addControl(new mapboxgl.NavigationControl());
-
         // geocoder (search box)
         geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
@@ -233,7 +264,6 @@
             bbox: abujaBbox,
             proximity: { longitude: 7.49508, latitude: 9.05785 }
         });
-
         // geocoder placement
         let form = document.getElementById('location-form');
         let addressInput = document.getElementById('address-input');
@@ -241,12 +271,10 @@
         geocoderDiv.id = "geocoder-container";
         form.insertBefore(geocoderDiv, addressInput.nextSibling);
         geocoder.addTo('#geocoder-container');
-
         // When user selects a result from geocoder
         geocoder.on('result', function(e) {
             setMarker(e.result.center, e.result.place_name);
         });
-
         // When user clicks on the map
         map.on('click', function(e) {
             if (isWithinAbuja(e.lngLat.lng, e.lngLat.lat)) {
@@ -256,12 +284,10 @@
                 alert('Please select a location within Abuja.');
             }
         });
-
         // When user types address and leaves input
         addressInput.addEventListener('change', function() {
             geocodeAddress(this.value);
         });
-
         // Use current location button
         document.getElementById('use-current-location').addEventListener('click', function() {
             if (navigator.geolocation) {
@@ -282,7 +308,6 @@
                 alert('Geolocation is not supported by your browser.');
             }
         });
-
         // Form submit
         document.getElementById('location-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -299,7 +324,6 @@
             }
             alert('Location confirmed!\nAddress: ' + address + '\nLatitude: ' + lat + '\nLongitude: ' + lng);
         });
-
         function setMarker(lngLat, address) {
             if (marker) marker.remove();
             marker = new mapboxgl.Marker({color: "#44bd32"})
@@ -309,7 +333,6 @@
             document.getElementById('lng').value = lngLat[0];
             if (address) document.getElementById('address-input').value = address;
         }
-
         function geocodeAddress(address) {
             fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?country=NG&bbox=${abujaBbox.join(',')}&access_token=${mapboxgl.accessToken}`)
                 .then(res => res.json())
@@ -325,7 +348,6 @@
                     }
                 });
         }
-
         // Use Google Maps Geocoding API for accurate addresses
         function reverseGeocodeGoogle(lng, lat) {
             // Replace YOUR_GOOGLE_MAPS_API_KEY with your actual key
