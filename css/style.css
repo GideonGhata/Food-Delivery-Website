@@ -1,3 +1,72 @@
+/* Sidebar Navigation Styles (centralized) */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  background: rgb(226, 74, 74);
+  overflow-x: hidden;
+  transition: 0.3s;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+  padding-top: 60px;
+}
+.sidebar a {
+  padding: 12px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  transition: 0.2s;
+}
+.sidebar a:hover {
+  background: #f1f1f1;
+  color: #44bd32;
+}
+.sidebar .closebtn {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  font-size: 32px;
+  color: #fff;
+  cursor: pointer;
+}
+.sidebar .logo {
+  position: absolute;
+  top: 10px;
+  left: 24px;
+  width: 120px;
+}
+.sidebar .logo img {
+  width: 100%;
+}
+.open-sidebar-btn {
+  font-size: 28px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 2100;
+  background: rgb(226, 74, 74);
+  border-radius: 6px;
+  padding: 4px 10px 2px 10px;
+  box-shadow: 1px 1px 8px rgba(0,0,0,0.04);
+}
+@media (max-width: 600px) {
+  .sidebar {padding-top: 40px;}
+  .sidebar a {font-size: 16px;}
+  .sidebar .logo {width: 90px;}
+}
+
+/* Header Spacing Improvements */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.7em;
+}
 /* CSS Style For All */
 * {
   margin: 0;
