@@ -47,11 +47,17 @@ function renderSidebar() {
 function updateSidebarFloatToggle() {
   var sidebar = document.getElementById('sidebar');
   var floatBtn = document.getElementById('sidebar-float-toggle');
-  if (!sidebar || !floatBtn) return;
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+  if (!sidebar || !floatBtn || !sidebarToggle) return;
   if (sidebar.classList.contains('collapsed')) {
     floatBtn.style.display = 'flex';
+    // Arrow icon for opening
+    floatBtn.innerHTML = '<i class="fa fa-arrow-right"></i>';
+    sidebarToggle.innerHTML = '<i class="fa fa-times"></i>';
   } else {
     floatBtn.style.display = 'none';
+    // X/close icon for closing
+    sidebarToggle.innerHTML = '<i class="fa fa-times"></i>';
   }
 }
 
