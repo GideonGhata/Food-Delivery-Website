@@ -1,6 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <style>
+        /* Sidebar styles */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background: #fff;
+            overflow-x: hidden;
+            transition: 0.3s;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+            padding-top: 60px;
+        }
+        .sidebar a {
+            padding: 12px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #2f3542;
+            display: block;
+            transition: 0.2s;
+        }
+        .sidebar a:hover {
+            background: #f1f1f1;
+            color: #44bd32;
+        }
+        .sidebar .closebtn {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            font-size: 32px;
+            color: #2f3542;
+            cursor: pointer;
+        }
+        .sidebar .logo {
+            position: absolute;
+            top: 10px;
+            left: 24px;
+            width: 120px;
+        }
+        .sidebar .logo img {
+            width: 100%;
+        }
+        .open-sidebar-btn {
+            font-size: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #2f3542;
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 2100;
+            background: #fff;
+            border-radius: 6px;
+            padding: 4px 10px 2px 10px;
+            box-shadow: 1px 1px 8px rgba(0,0,0,0.04);
+        }
+        @media (max-width: 600px) {
+            .sidebar {padding-top: 40px;}
+            .sidebar a {font-size: 16px;}
+            .sidebar .logo {width: 90px;}
+        }
+        </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,173 +101,67 @@
             </script>
 </head>
 <body>
-    <!-- Sidebar Navigation Start -->
-    <button id="sidebar-open" class="sidebar-open"><i class="fa fa-bars"></i></button>
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo" style="margin-right:10px;">
-                <a href="index.html" title="Logo">
-                    <img src="img/logo.png" alt="Logo" class="img-responsive" style="max-width:90px;">
+    <!-- Navigation Section Start -->
+            <!-- Sidebar Navigation Start -->
+            <button class="open-sidebar-btn" onclick="openSidebar()" aria-label="Open navigation menu">&#9776;</button>
+            <nav id="mySidebar" class="sidebar">
+                <span class="closebtn" onclick="closeSidebar()">&times;</span>
+                <div class="logo">
+                    <a href="index.html" title="Logo">
+                        <img src="img/logo.png" alt="Logo" class="img-responsive">
+                    </a>
+                </div>
+                <a class="hvr-underline-from-center" href="index.html">Home</a>
+                <a class="hvr-underline-from-center" href="categories.html">Categories</a>
+                <a class="hvr-underline-from-center" href="foods.html">Our Locations</a>
+                <a class="hvr-underline-from-center" href="order.html">Order</a>
+                <a class="hvr-underline-from-center" href="contact.html">Contact</a>
+                <a class="hvr-underline-from-center" href="login.html">Login</a>
+                <a id="shopping-cart" class="shopping-cart">
+                    <i class="fa fa-cart-arrow-down"></i>
+                    <span class="badge">0</span>
                 </a>
-            </div>
-            <button id="sidebar-close" class="sidebar-close">&times;</button>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
-            <li><a href="categories.html"><i class="fa fa-list"></i> Categories</a></li>
-            <li><a href="foods.html"><i class="fa fa-map-marker"></i> Our Locations</a></li>
-            <li><a href="order.html"><i class="fa fa-shopping-cart"></i> Order</a></li>
-            <li><a href="contact.html"><i class="fa fa-envelope"></i> Contact</a></li>
-            <li><a href="login.html"><i class="fa fa-sign-in"></i> Login</a></li>
-        </ul>
-        <div style="padding: 18px 24px 0 24px;">
-            <a id="shopping-cart" class="shopping-cart">
-                <i class="fa fa-cart-arrow-down"></i>
-                <span class="badge">0</span>
-            </a>
-            <div id="cart-content" class="cart-content">
-                <h3 class="text-center">Shopping Cart</h3>
-                <table class="cart-table" border="0">
-                    <thead>
-                        <tr>
-                            <th>Food</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Qty</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cart-table-body"></tbody>
-                    <tfoot>
-                        <tr id="cart-total-row"></tr>
-                    </tfoot>
-                </table>
-                <a href="order.html" class="btn-primary">Confirm Order</a>
-            </div>
-        </div>
-    </div>
-    <!-- Sidebar Navigation End -->
-    <style>
-    /* Sidebar styles */
-    .sidebar {
-        height: 100vh;
-        width: 0;
-        position: fixed;
-        z-index: 2000;
-        top: 0;
-        left: 0;
-        background: #fff;
-        overflow-x: hidden;
-        transition: 0.3s;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.08);
-        padding-top: 60px;
-    }
-    .sidebar-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        background: #44bd32;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 18px;
-        box-sizing: border-box;
-    }
-    .sidebar-title {
-        font-size: 1.3em;
-        font-weight: bold;
-    }
-    .sidebar-close {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 2em;
-        cursor: pointer;
-        line-height: 1;
-    }
-    .sidebar-menu {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .sidebar-menu li {
-        padding: 16px 24px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .sidebar-menu li a {
-        color: #2f3542;
-        text-decoration: none;
-        font-size: 1.1em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: color 0.2s;
-    }
-    .sidebar-menu li a:hover {
-        color: #44bd32;
-    }
-    .sidebar-open {
-        position: fixed;
-        top: 18px;
-        left: 18px;
-        z-index: 2100;
-        background: #44bd32;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 12px;
-        font-size: 1.5em;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        transition: background 0.2s;
-    }
-    .sidebar-open:hover {
-        background: #6c5ce7;
-    }
-    @media (max-width: 600px) {
-        .sidebar {
-            width: 0;
-            min-width: 0;
-        }
-        .sidebar-menu li {
-            padding: 14px 14px;
-        }
-    }
-    </style>
-    <script>
-    // Sidebar open/close logic
-    document.addEventListener('DOMContentLoaded', function() {
-        var sidebar = document.getElementById('sidebar');
-        var openBtn = document.getElementById('sidebar-open');
-        var closeBtn = document.getElementById('sidebar-close');
-        function openSidebar() {
-            sidebar.style.width = '260px';
-            openBtn.style.display = 'none';
-        }
-        function closeSidebar() {
-            sidebar.style.width = '0';
-            openBtn.style.display = 'block';
-        }
-        openBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            openSidebar();
-        });
-        closeBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            closeSidebar();
-        });
-        // Optional: close sidebar when clicking outside
-        document.addEventListener('click', function(e) {
-            if (sidebar.style.width === '260px' && !sidebar.contains(e.target) && e.target !== openBtn) {
-                closeSidebar();
+                <div id="cart-content" class="cart-content">
+                    <h3 class="text-center">Shopping Cart</h3>
+                    <table class="cart-table" border="0">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-table-body"></tbody>
+                        <tfoot>
+                            <tr id="cart-total-row"></tr>
+                        </tfoot>
+                    </table>
+                    <a href="order.html" class="btn-primary">Confirm Order</a>
+                </div>
+            </nav>
+            <script>
+            function openSidebar() {
+                document.getElementById("mySidebar").style.width = "270px";
+                document.body.style.overflow = 'hidden';
             }
-        });
-    });
-    </script>
+            function closeSidebar() {
+                document.getElementById("mySidebar").style.width = "0";
+                document.body.style.overflow = '';
+            }
+            // Close sidebar on click outside (optional UX)
+            document.addEventListener('click', function(e) {
+                var sidebar = document.getElementById('mySidebar');
+                if (sidebar && sidebar.style.width !== '0px' && !sidebar.contains(e.target) && !e.target.classList.contains('open-sidebar-btn')) {
+                    closeSidebar();
+                }
+            });
+            </script>
+            <!-- Sidebar Navigation End -->
+        <!-- Add loading="lazy" and width/height to all images in markup as needed -->
+    <!-- Navigation Section End -->
 
     <!-- Food Search Section Start -->
     <section class="food-search text-center" >

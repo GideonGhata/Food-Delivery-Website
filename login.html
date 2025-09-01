@@ -29,177 +29,53 @@
     <header class="navbar">
         <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
             <div class="container">
+                <!-- logo -->
+                <div class="logo">
+                    <a href="index.html" title="Logo">
+                        <img src="img/logo.png" alt="Logo" class="img-responsive">
+                    </a>
+                </div>
+                <!-- Main Menu -->
+                <div class="menu text-right">
+                    <ul>
+                        <li><a class="hvr-underline-from-center" href="index.html">Home</a></li>
+                        <li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>
+                        <li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>
+                        <li><a class="hvr-underline-from-center" href="order.html">Order</a></li>
+                        <li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>
+                        <li><a class="hvr-underline-from-center" href="login.html">Login</a></li>
+                        <li>
+                            <a id="shopping-cart" class="shopping-cart">
+                                <i class="fa fa-cart-arrow-down"></i>
+                                <span class="badge">0</span>
+                            </a>
+                            <div id="cart-content" class="cart-content">
+                                <h3 class="text-center">Shopping Cart</h3>
+                                <table class="cart-table" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Food</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cart-table-body"></tbody>
+                                    <tfoot>
+                                        <tr id="cart-total-row"></tr>
+                                    </tfoot>
+                                </table>
+                                <a href="order.html" class="btn-primary">Confirm Order</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
     <!-- Navigation Section End -->
-        <!-- Sidebar Navigation Start -->
-        <button id="sidebar-open" class="sidebar-open"><i class="fa fa-bars"></i></button>
-        <div id="sidebar" class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo" style="margin-right:10px;">
-                    <a href="index.html" title="Logo">
-                        <img src="img/logo.png" alt="Logo" class="img-responsive" style="max-width:90px;">
-                    </a>
-                </div>
-                <button id="sidebar-close" class="sidebar-close">&times;</button>
-            </div>
-            <ul class="sidebar-menu">
-                <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="categories.html"><i class="fa fa-list"></i> Categories</a></li>
-                <li><a href="foods.html"><i class="fa fa-map-marker"></i> Our Locations</a></li>
-                <li><a href="order.html"><i class="fa fa-shopping-cart"></i> Order</a></li>
-                <li><a href="contact.html"><i class="fa fa-envelope"></i> Contact</a></li>
-                <li><a href="login.html"><i class="fa fa-sign-in"></i> Login</a></li>
-            </ul>
-            <div style="padding: 18px 24px 0 24px;">
-                <a id="shopping-cart" class="shopping-cart">
-                    <i class="fa fa-cart-arrow-down"></i>
-                    <span class="badge">0</span>
-                </a>
-                <div id="cart-content" class="cart-content">
-                    <h3 class="text-center">Shopping Cart</h3>
-                    <table class="cart-table" border="0">
-                        <thead>
-                            <tr>
-                                <th>Food</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Qty</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cart-table-body"></tbody>
-                        <tfoot>
-                            <tr id="cart-total-row"></tr>
-                        </tfoot>
-                    </table>
-                    <a href="order.html" class="btn-primary">Confirm Order</a>
-                </div>
-            </div>
-        </div>
-        <!-- Sidebar Navigation End -->
-    <style>
-    /* Sidebar styles */
-    .sidebar {
-        height: 100vh;
-        width: 0;
-        position: fixed;
-        z-index: 2000;
-        top: 0;
-        left: 0;
-        background: #fff;
-        overflow-x: hidden;
-        transition: 0.3s;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.08);
-        padding-top: 60px;
-    }
-    .sidebar-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        background: #44bd32;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 18px;
-        box-sizing: border-box;
-    }
-    .sidebar-title {
-        font-size: 1.3em;
-        font-weight: bold;
-    }
-    .sidebar-close {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 2em;
-        cursor: pointer;
-        line-height: 1;
-    }
-    .sidebar-menu {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .sidebar-menu li {
-        padding: 16px 24px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .sidebar-menu li a {
-        color: #2f3542;
-        text-decoration: none;
-        font-size: 1.1em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: color 0.2s;
-    }
-    .sidebar-menu li a:hover {
-        color: #44bd32;
-    }
-    .sidebar-open {
-        position: fixed;
-        top: 18px;
-        left: 18px;
-        z-index: 2100;
-        background: #44bd32;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 12px;
-        font-size: 1.5em;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        transition: background 0.2s;
-    }
-    .sidebar-open:hover {
-        background: #6c5ce7;
-    }
-    @media (max-width: 600px) {
-        .sidebar {
-            width: 0;
-            min-width: 0;
-        }
-        .sidebar-menu li {
-            padding: 14px 14px;
-        }
-    }
-    </style>
-    <script>
-    // Sidebar open/close logic
-    document.addEventListener('DOMContentLoaded', function() {
-        var sidebar = document.getElementById('sidebar');
-        var openBtn = document.getElementById('sidebar-open');
-        var closeBtn = document.getElementById('sidebar-close');
-        function openSidebar() {
-            sidebar.style.width = '260px';
-            openBtn.style.display = 'none';
-        }
-        function closeSidebar() {
-            sidebar.style.width = '0';
-            openBtn.style.display = 'block';
-        }
-        openBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            openSidebar();
-        });
-        closeBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            closeSidebar();
-        });
-        // Optional: close sidebar when clicking outside
-        document.addEventListener('click', function(e) {
-            if (sidebar.style.width === '260px' && !sidebar.contains(e.target) && e.target !== openBtn) {
-                closeSidebar();
-            }
-        });
-    });
-    </script>
 
     <!-- Login Section Start -->
     <section class="login" style="background: url('img/doodle-bg.png') center center/cover no-repeat; padding: 60px 0;">
