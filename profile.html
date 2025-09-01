@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Online Food Delivery Website</title>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="css/hover-min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation Section Start -->
+    <header class="navbar">
+        <nav id="site-top-nav" class="navbar-menu navbar-fixed-top">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html" title="Logo"></a>
+                </div>
+                <div class="menu text-right">
+                    <ul id="nav-menu">
+                        <!-- Dynamic menu will be rendered here -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Navigation Section End -->
+
+    <section class="profile" style="padding: 60px 0;">
+        <div class="container" style="max-width: 500px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 12px; padding: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.07);">
+            <h2 class="text-center" style="color: #44bd32;">My Profile</h2>
+            <div class="heading-border"></div>
+            <div id="welcome-msg" class="text-center" style="margin-bottom: 18px;"></div>
+            <form id="edit-profile-form">
+                <label class="label">Name</label>
+                <input type="text" id="profile-name" required>
+                <label class="label">Email</label>
+                <input type="email" id="profile-email" required>
+                <label class="label">Password</label>
+                <input type="password" id="profile-password" required>
+                <input type="submit" class="btn-primary" value="Save Changes" style="margin-top: 12px;">
+            </form>
+            <div id="profile-success" style="display:none;color:green;text-align:center;margin-top:10px;">Profile updated!</div>
+            <hr style="margin: 30px 0;">
+            <h3 class="text-center">Previous Orders</h3>
+            <div id="orders-list" style="margin-top: 10px;"></div>
+        </div>
+    </section>
+
+    <section class="footer">
+        <div class="container">
+            <div class="grid-3"></div>
+        </div>
+    </section>
+    <section class="copyright">
+        <div class="container text-center">
+            <p>All rights reserved. Design By <a href="#">Gideon Ghata</a></p>
+        </div>
+        <a id="back-to-top" class="btn-primary">
+            <i class="fa fa-angle-double-up"></i>
+        </a>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+    // Dynamic Navbar
+    function renderNav() {
+        const nav = document.getElementById('nav-menu');
+        if (!nav) return;
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        nav.innerHTML = '';
+        nav.innerHTML += '<li><a class="hvr-underline-from-center" href="index.html">Home</a></li>';
+        nav.innerHTML += '<li><a class="hvr-underline-from-center" href="categories.html">Categories</a></li>';
+        nav.innerHTML += '<li><a class="hvr-underline-from-center" href="foods.html">Our Locations</a></li>';
+        nav.innerHTML += '<li><a class="hvr-underline-from-center" href="order.html">Order</a></li>';
+        nav.innerHTML += '<li><a class="hvr-underline-from-center" href="contact.html">Contact</a></li>';
+        nav.innerHTML += '<li>\
+            <a id="shopping-cart" class="shopping-cart">\
+                <i class="fa fa-cart-arrow-down"></i>\
+                <span class="badge">' + (JSON.parse(localStorage.getItem('cart') || '[]').reduce((sum, item) => sum + item.qty, 0)) + '</span>\
+            </a>\
+            <div id="cart-content" class="cart-content">\
+                <h3 class="text-center">Shopping Cart</h3>\
+                <table class="cart-table" border="0">\
+                    <thead>\
+                        <tr>\
+                            <th>Food</th>\
+                            <th>Name</th>\
+                            <th>Price</th>\
+                            <th>Qty</th>\
+                            <th>Total</th>\
+                            <th>Action</th>\
+                        </tr>\
+                    </thead>\
+                    <tbody id="cart-table-body"></tbody>\
+                    <tfoot>\
+                        <tr id="cart-total-row"></tr>\
+                    </tfoot>\
+                </table>\
+                <a href="order.html" class="btn-primary">Confirm Order</a>\
+            </div>\
+        </li>';
+        if (user) {
+            nav.innerHTML += `<li>Welcome, <b>${user.name}</b></li><li><a href="profile.html">Profile</a></li><li><a href="#" id="logout-link">Logout</a></li>`;
+        } else {
+            nav.innerHTML += '<li><a href="login.html">Login</a></li>';
+        }
+    }
+    renderNav();
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'logout-link') {
+            localStorage.removeItem('user');
+            renderNav();
+            window.location.href = 'index.html';
+        }
+    });
+    // Profile logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        document.getElementById('welcome-msg').innerText = `Welcome, ${user.name}!`;
+        document.getElementById('profile-name').value = user.name;
+        document.getElementById('profile-email').value = user.email;
+        document.getElementById('profile-password').value = user.password;
+        document.getElementById('edit-profile-form').onsubmit = function(e) {
+            e.preventDefault();
+            user.name = document.getElementById('profile-name').value;
+            user.email = document.getElementById('profile-email').value;
+            user.password = document.getElementById('profile-password').value;
+            localStorage.setItem('user', JSON.stringify(user));
+            document.getElementById('profile-success').style.display = 'block';
+            renderNav();
+            setTimeout(() => { document.getElementById('profile-success').style.display = 'none'; }, 2000);
+        };
+        // Dummy previous orders
+        let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        if (orders.length === 0) {
+            document.getElementById('orders-list').innerHTML = '<p>No previous orders.</p>';
+        } else {
+            let html = '<ul style="list-style:disc inside;">';
+            orders.forEach(o => {
+                html += `<li>${o.date}: ${o.items} - ₦${o.total}</li>`;
+            });
+            html += '</ul>';
+            document.getElementById('orders-list').innerHTML = html;
+        }
+    });
+    </script>
+</body>
+</html>
